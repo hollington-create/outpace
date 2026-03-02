@@ -68,7 +68,7 @@ export default function CaseStudiesPage() {
       <section className="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+            <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
               Case Studies
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-text max-w-4xl leading-tight">
@@ -83,16 +83,16 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* Cube Printing Case Study */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Client Header */}
           <AnimatedSection>
-            <div className="p-8 sm:p-12 rounded-2xl bg-brand-dark/60 border border-brand-border/50">
+            <div className="p-8 sm:p-12 rounded-2xl bg-brand-dark/80 border border-brand-border/50">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-brand-teal/10 flex items-center justify-center">
-                      <Building2 className="text-brand-cyan" size={24} />
+                    <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center">
+                      <Building2 className="text-brand-cyan-bright" size={24} />
                     </div>
                     <div>
                       <h2 className="text-2xl sm:text-3xl font-bold text-brand-text">
@@ -105,7 +105,7 @@ export default function CaseStudiesPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 mb-4">
-                    <Factory className="text-brand-cyan" size={16} />
+                    <Factory className="text-brand-cyan-bright" size={16} />
                     <span className="text-sm text-brand-cyan font-medium">
                       Med-Tech Printing Specialists
                     </span>
@@ -128,7 +128,7 @@ export default function CaseStudiesPage() {
               {results.map((r) => (
                 <div
                   key={r.label}
-                  className="p-6 rounded-2xl bg-brand-dark/60 border border-brand-border/50 text-center"
+                  className="p-6 rounded-2xl bg-brand-dark/80 border border-brand-border/50 text-center"
                 >
                   <p className="text-3xl sm:text-4xl font-extrabold text-brand-cyan">
                     {r.value}
@@ -150,9 +150,9 @@ export default function CaseStudiesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {deliverables.map((d, i) => (
                 <AnimatedSection key={d.title} delay={i * 0.08}>
-                  <div className="p-8 rounded-2xl bg-brand-dark/60 border border-brand-border/50 hover:border-brand-teal/30 transition-colors h-full">
-                    <div className="w-10 h-10 rounded-lg bg-brand-teal/10 flex items-center justify-center mb-4">
-                      <d.icon className="text-brand-cyan" size={20} />
+                  <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 hover:border-brand-cyan/30 transition-colors h-full">
+                    <div className="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center mb-4">
+                      <d.icon className="text-brand-cyan-bright" size={20} />
                     </div>
                     <h4 className="text-lg font-bold text-brand-text">
                       {d.title}
@@ -168,10 +168,10 @@ export default function CaseStudiesPage() {
 
           {/* Outcome */}
           <AnimatedSection delay={0.2}>
-            <div className="mt-20 p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-brand-teal/10 to-brand-cyan/5 border border-brand-teal/20">
+            <div className="mt-20 p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-brand-cyan/10 to-brand-emerald/5 border border-brand-cyan/20">
               <div className="flex items-start gap-4">
                 <CheckCircle2
-                  className="text-brand-cyan flex-shrink-0 mt-1"
+                  className="text-brand-cyan-bright flex-shrink-0 mt-1"
                   size={28}
                 />
                 <div>
@@ -207,7 +207,7 @@ export default function CaseStudiesPage() {
             <div className="mt-10">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-brand-teal text-white font-semibold rounded-lg hover:bg-brand-cyan transition-all duration-200 inline-flex items-center gap-2 text-lg"
+                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg shadow-lg shadow-brand-cyan/25 transition-all duration-200 inline-flex items-center gap-2 text-lg"
               >
                 Book a Discovery Call
                 <ArrowRight size={20} />

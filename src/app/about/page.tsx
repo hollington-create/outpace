@@ -65,7 +65,7 @@ export default function AboutPage() {
       <section className="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+            <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
               About Outpace
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-text max-w-4xl leading-tight">
@@ -81,11 +81,11 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
-              <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
                 Our Story
               </p>
               <h2 className="text-3xl sm:text-4xl font-bold text-brand-text">
@@ -114,9 +114,9 @@ export default function AboutPage() {
 
             <AnimatedSection delay={0.2}>
               <div className="space-y-6">
-                <div className="p-6 rounded-2xl bg-brand-dark/60 border border-brand-border/50">
+                <div className="p-6 rounded-2xl bg-brand-dark/80 border border-brand-border/50">
                   <div className="flex items-center gap-3 mb-3">
-                    <MapPin className="text-brand-cyan" size={20} />
+                    <MapPin className="text-brand-cyan-bright" size={20} />
                     <h3 className="font-semibold text-brand-text">
                       Based in Limerick
                     </h3>
@@ -127,9 +127,9 @@ export default function AboutPage() {
                     punching above its weight.
                   </p>
                 </div>
-                <div className="p-6 rounded-2xl bg-brand-dark/60 border border-brand-border/50">
+                <div className="p-6 rounded-2xl bg-brand-dark/80 border border-brand-border/50">
                   <div className="flex items-center gap-3 mb-3">
-                    <Globe className="text-brand-cyan" size={20} />
+                    <Globe className="text-brand-cyan-bright" size={20} />
                     <h3 className="font-semibold text-brand-text">
                       Working Globally
                     </h3>
@@ -151,7 +151,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
-              <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
                 Our Values
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
@@ -163,8 +163,8 @@ export default function AboutPage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {values.map((v, i) => (
               <AnimatedSection key={v.title} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-brand-secondary/50 border border-brand-border/50 hover:border-brand-teal/30 transition-colors h-full">
-                  <v.icon className="text-brand-cyan mb-4" size={28} />
+                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 hover:border-brand-cyan/30 transition-colors h-full">
+                  <v.icon className="text-brand-cyan-bright mb-4" size={28} />
                   <h3 className="text-xl font-bold text-brand-text">
                     {v.title}
                   </h3>
@@ -179,11 +179,11 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
-              <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
                 The Team
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
@@ -199,9 +199,9 @@ export default function AboutPage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6">
             {team.map((t, i) => (
               <AnimatedSection key={i} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-brand-dark/60 border border-brand-border/50 text-center">
-                  <div className="w-20 h-20 rounded-full bg-brand-teal/10 mx-auto mb-6 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-brand-teal">
+                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 text-center">
+                  <div className="w-20 h-20 rounded-full bg-brand-cyan/10 mx-auto mb-6 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-brand-cyan-bright">
                       {t.name[0]}
                     </span>
                   </div>
@@ -231,7 +231,7 @@ export default function AboutPage() {
             <div className="mt-10">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-brand-teal text-white font-semibold rounded-lg hover:bg-brand-cyan transition-all duration-200 inline-flex items-center gap-2 text-lg"
+                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg shadow-lg shadow-brand-cyan/25 transition-all duration-200 inline-flex items-center gap-2 text-lg"
               >
                 Get in Touch
                 <ArrowRight size={20} />

@@ -19,7 +19,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-dark/80 backdrop-blur-xl border-b border-brand-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-darkest/80 backdrop-blur-xl border-b border-brand-border/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2">
@@ -35,7 +35,7 @@ export default function Navbar() {
                 href={link.href}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   pathname === link.href
-                    ? "text-brand-cyan bg-brand-cyan/10"
+                    ? "text-brand-cyan-bright bg-brand-cyan-bright/10"
                     : "text-brand-muted hover:text-brand-text hover:bg-white/5"
                 }`}
               >
@@ -44,7 +44,7 @@ export default function Navbar() {
             ))}
             <Link
               href="/contact"
-              className="ml-4 px-5 py-2.5 bg-brand-teal text-white text-sm font-semibold rounded-lg hover:bg-brand-cyan transition-colors duration-200"
+              className="ml-4 px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white text-sm font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-brand-cyan/25"
             >
               Book a Call
             </Link>
@@ -76,7 +76,7 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
                     pathname === link.href
-                      ? "text-brand-cyan bg-brand-cyan/10"
+                      ? "text-brand-cyan-bright bg-brand-cyan-bright/10"
                       : "text-brand-muted hover:text-brand-text hover:bg-white/5"
                   }`}
                 >
@@ -86,7 +86,7 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setOpen(false)}
-                className="block mt-2 px-4 py-3 bg-brand-teal text-white text-sm font-semibold rounded-lg text-center hover:bg-brand-cyan transition-colors"
+                className="block mt-2 px-4 py-3 bg-gradient-to-r from-brand-cyan to-brand-teal text-white text-sm font-semibold rounded-lg text-center hover:from-brand-cyan-bright hover:to-brand-cyan transition-all shadow-lg shadow-brand-cyan/25"
               >
                 Book a Call
               </Link>

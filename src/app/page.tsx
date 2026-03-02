@@ -112,21 +112,23 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-dark via-brand-dark to-brand-secondary" />
+        <div className="absolute inset-0 bg-brand-darkest" />
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-teal/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-cyan/5 rounded-full blur-3xl" />
+          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-cyan/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-brand-emerald/[0.08] rounded-full blur-[120px]" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center pt-20">
           <AnimatedSection>
-            <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-6">
+            <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-6">
               Full-Spectrum Business Development
             </p>
           </AnimatedSection>
           <AnimatedSection delay={0.1}>
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight text-brand-text leading-[0.95]">
-              OUTPACE
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan-bright to-brand-emerald">
+                OUTPACE
+              </span>
             </h1>
           </AnimatedSection>
           <AnimatedSection delay={0.2}>
@@ -140,14 +142,14 @@ export default function HomePage() {
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-brand-teal text-white font-semibold rounded-lg hover:bg-brand-cyan transition-all duration-200 inline-flex items-center gap-2 text-lg"
+                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg transition-all duration-200 inline-flex items-center gap-2 text-lg shadow-lg shadow-brand-cyan/25"
               >
                 Book a Discovery Call
                 <ArrowRight size={20} />
               </Link>
               <Link
                 href="/services"
-                className="px-8 py-4 border border-brand-border text-brand-muted font-medium rounded-lg hover:border-brand-teal hover:text-brand-text transition-all duration-200 text-lg"
+                className="px-8 py-4 border border-brand-border hover:border-brand-muted text-brand-muted hover:text-white font-semibold rounded-lg transition-all duration-200 text-lg"
               >
                 Explore Services
               </Link>
@@ -163,11 +165,11 @@ export default function HomePage() {
       </section>
 
       {/* The Problem */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
-              <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-4">
                 The Problem
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
@@ -200,8 +202,8 @@ export default function HomePage() {
               },
             ].map((item) => (
               <AnimatedSection key={item.title}>
-                <div className="p-8 rounded-2xl bg-brand-dark/60 border border-brand-border/50 hover:border-brand-teal/30 transition-colors">
-                  <item.icon className="text-brand-cyan mb-4" size={28} />
+                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 hover:border-brand-cyan/30 transition-colors">
+                  <item.icon className="text-brand-cyan-bright mb-4" size={28} />
                   <h3 className="text-lg font-semibold text-brand-text">
                     {item.title}
                   </h3>
@@ -220,7 +222,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
-              <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-4">
                 Our Approach
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
@@ -236,9 +238,9 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {services.map((s, i) => (
               <AnimatedSection key={s.title} delay={i * 0.1}>
-                <div className="group p-8 rounded-2xl bg-brand-secondary/50 border border-brand-border/50 hover:border-brand-teal/40 transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-brand-teal/10 flex items-center justify-center mb-6 group-hover:bg-brand-teal/20 transition-colors">
-                    <s.icon className="text-brand-cyan" size={24} />
+                <div className="group p-8 rounded-2xl bg-brand-dark/50 border border-brand-border/50 hover:border-brand-cyan/40 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6 group-hover:bg-brand-cyan/20 transition-colors">
+                    <s.icon className="text-brand-cyan-bright" size={24} />
                   </div>
                   <h3 className="text-xl font-bold text-brand-text">
                     {s.title}
@@ -254,11 +256,11 @@ export default function HomePage() {
       </section>
 
       {/* What Sets Us Apart */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
-              <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-4">
                 What Sets Us Apart
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
@@ -274,8 +276,8 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {usps.map((u, i) => (
               <AnimatedSection key={u.title} delay={i * 0.08}>
-                <div className="p-8 rounded-2xl bg-brand-dark/60 border border-brand-border/50 hover:border-brand-teal/30 transition-colors h-full">
-                  <u.icon className="text-brand-cyan mb-4" size={24} />
+                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 hover:border-brand-cyan/30 transition-colors h-full">
+                  <u.icon className="text-brand-cyan-bright mb-4" size={24} />
                   <h3 className="text-lg font-semibold text-brand-text">
                     {u.title}
                   </h3>
@@ -294,7 +296,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
-              <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-4">
                 How We Work
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
@@ -309,12 +311,12 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {process.map((p, i) => (
               <AnimatedSection key={p.title} delay={i * 0.1}>
-                <div className="relative p-8 rounded-2xl bg-brand-secondary/50 border border-brand-border/50 hover:border-brand-teal/40 transition-all duration-300">
-                  <span className="text-5xl font-extrabold text-brand-teal/10 absolute top-4 right-6">
+                <div className="relative p-8 rounded-2xl bg-brand-dark/50 border border-brand-border/50 hover:border-brand-cyan/40 transition-all duration-300">
+                  <span className="text-5xl font-extrabold text-brand-cyan/10 absolute top-4 right-6">
                     {p.step}
                   </span>
-                  <div className="w-12 h-12 rounded-xl bg-brand-teal/10 flex items-center justify-center mb-6">
-                    <p.icon className="text-brand-cyan" size={24} />
+                  <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6">
+                    <p.icon className="text-brand-cyan-bright" size={24} />
                   </div>
                   <h3 className="text-xl font-bold text-brand-text">
                     {p.title}
@@ -330,13 +332,13 @@ export default function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((s) => (
                 <div key={s.label} className="text-center">
-                  <p className="text-4xl sm:text-5xl font-extrabold text-brand-cyan">
+                  <p className="text-4xl sm:text-5xl font-extrabold text-brand-cyan-bright">
                     {s.value}
                   </p>
                   <p className="mt-2 text-sm text-brand-muted">{s.label}</p>
@@ -361,7 +363,7 @@ export default function HomePage() {
             <div className="mt-10">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-brand-teal text-white font-semibold rounded-lg hover:bg-brand-cyan transition-all duration-200 inline-flex items-center gap-2 text-lg"
+                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg transition-all duration-200 inline-flex items-center gap-2 text-lg shadow-lg shadow-brand-cyan/25"
               >
                 Book a Discovery Call
                 <ArrowRight size={20} />

@@ -10,10 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
+          darkest: "#0a0f1a",
           dark: "#0F172A",
           secondary: "#1E293B",
           teal: "#0891B2",
           cyan: "#06B6D4",
+          "cyan-bright": "#22d3ee",
+          emerald: "#34d399",
+          "emerald-deep": "#10b981",
           text: "#F8FAFC",
           muted: "#94A3B8",
           border: "#334155",

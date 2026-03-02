@@ -163,7 +163,7 @@ export default function ServicesPage() {
       <section className="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+            <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
               Our Services
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-text max-w-4xl leading-tight">
@@ -183,20 +183,18 @@ export default function ServicesPage() {
         <section
           key={pillar.id}
           id={pillar.id}
-          className={`py-24 sm:py-32 ${
-            idx % 2 === 0 ? "bg-brand-secondary" : "bg-brand-dark"
-          }`}
+          className="py-24 sm:py-32 bg-brand-dark"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               <AnimatedSection>
-                <span className="text-6xl font-extrabold text-brand-teal/10">
+                <span className="text-6xl font-extrabold text-brand-cyan/10">
                   {pillar.number}
                 </span>
                 <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-brand-text">
                   {pillar.title}
                 </h2>
-                <p className="mt-2 text-brand-cyan font-medium">
+                <p className="mt-2 text-brand-cyan-bright font-medium">
                   {pillar.subtitle}
                 </p>
                 <p className="mt-6 text-brand-muted leading-relaxed text-lg">
@@ -209,10 +207,10 @@ export default function ServicesPage() {
                   {pillar.features.map((f, i) => (
                     <div
                       key={i}
-                      className="flex items-start gap-4 p-5 rounded-xl bg-brand-dark/40 border border-brand-border/30 hover:border-brand-teal/30 transition-colors"
+                      className="flex items-start gap-4 p-5 rounded-xl bg-brand-dark/80 border border-brand-border/30 hover:border-brand-cyan/30 transition-colors"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-brand-teal/10 flex-shrink-0 flex items-center justify-center">
-                        <f.icon className="text-brand-cyan" size={20} />
+                      <div className="w-10 h-10 rounded-lg bg-brand-cyan/10 flex-shrink-0 flex items-center justify-center">
+                        <f.icon className="text-brand-cyan-bright" size={20} />
                       </div>
                       <p className="text-brand-text font-medium pt-1.5">
                         {f.text}
@@ -227,7 +225,7 @@ export default function ServicesPage() {
       ))}
 
       {/* CTA */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <AnimatedSection>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
@@ -241,7 +239,7 @@ export default function ServicesPage() {
             <div className="mt-10">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-brand-teal text-white font-semibold rounded-lg hover:bg-brand-cyan transition-all duration-200 inline-flex items-center gap-2 text-lg"
+                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg shadow-lg shadow-brand-cyan/25 transition-all duration-200 inline-flex items-center gap-2 text-lg"
               >
                 Book a Discovery Call
                 <ArrowRight size={20} />

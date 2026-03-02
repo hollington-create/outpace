@@ -25,7 +25,7 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-dark border-t border-brand-border/50">
+    <footer className="bg-brand-darkest border-t border-brand-border/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
@@ -40,13 +40,13 @@ export default function Footer() {
               <span>Limerick, Ireland</span>
               <a
                 href="mailto:hello@outpace.ie"
-                className="hover:text-brand-cyan transition-colors"
+                className="hover:text-brand-cyan-bright transition-colors"
               >
                 hello@outpace.ie
               </a>
               <a
                 href="tel:+3530000000000"
-                className="hover:text-brand-cyan transition-colors"
+                className="hover:text-brand-cyan-bright transition-colors"
               >
                 +353 (0) 000 000 000
               </a>
@@ -63,7 +63,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-brand-muted hover:text-brand-cyan transition-colors inline-flex items-center gap-1 group"
+                      className="text-sm text-brand-muted hover:text-brand-cyan-bright transition-colors inline-flex items-center gap-1 group"
                     >
                       {link.label}
                       <ArrowUpRight

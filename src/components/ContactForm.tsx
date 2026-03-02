@@ -36,8 +36,8 @@ export default function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div className="p-8 rounded-2xl bg-brand-secondary border border-brand-teal/30 text-center">
-        <CheckCircle2 className="text-brand-cyan mx-auto mb-4" size={48} />
+      <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-cyan/30 text-center">
+        <CheckCircle2 className="text-brand-cyan-bright mx-auto mb-4" size={48} />
         <h3 className="text-xl font-bold text-brand-text">Message sent</h3>
         <p className="mt-2 text-brand-muted">
           We&apos;ll be in touch within 24 hours. Looking forward to learning
@@ -45,7 +45,7 @@ export default function ContactForm() {
         </p>
         <button
           onClick={() => setStatus("idle")}
-          className="mt-6 text-sm text-brand-cyan hover:text-brand-teal transition-colors"
+          className="mt-6 text-sm text-brand-cyan-bright hover:text-brand-cyan transition-colors"
         >
           Send another message
         </button>
@@ -69,7 +69,7 @@ export default function ContactForm() {
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition-colors"
+            className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-colors"
             placeholder="Your name"
           />
         </div>
@@ -86,7 +86,7 @@ export default function ContactForm() {
             required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition-colors"
+            className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-colors"
             placeholder="you@company.com"
           />
         </div>
@@ -104,7 +104,7 @@ export default function ContactForm() {
           type="text"
           value={form.company}
           onChange={(e) => setForm({ ...form, company: e.target.value })}
-          className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition-colors"
+          className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-colors"
           placeholder="Your company name"
         />
       </div>
@@ -122,7 +122,7 @@ export default function ContactForm() {
           rows={5}
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
-          className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition-colors resize-none"
+          className="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-brand-text placeholder-brand-muted/50 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-colors resize-none"
           placeholder="Tell us about your business and what you're looking to achieve..."
         />
       </div>
@@ -137,7 +137,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full sm:w-auto px-8 py-4 bg-brand-teal text-white font-semibold rounded-lg hover:bg-brand-cyan transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-cyan/25"
       >
         {status === "sending" ? (
           <>

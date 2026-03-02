@@ -43,7 +43,7 @@ export default function ContactPage() {
       <section className="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <p className="text-brand-teal font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+            <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
               Get in Touch
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-text max-w-4xl leading-tight">
@@ -58,13 +58,13 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="py-24 sm:py-32 bg-brand-secondary">
+      <section className="py-24 sm:py-32 bg-brand-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
             {/* Form */}
             <div className="lg:col-span-2">
               <AnimatedSection>
-                <div className="p-8 sm:p-10 rounded-2xl bg-brand-dark/60 border border-brand-border/50">
+                <div className="p-8 sm:p-10 rounded-2xl bg-brand-dark/80 border border-brand-border/50">
                   <h2 className="text-2xl font-bold text-brand-text mb-8">
                     Send us a message
                   </h2>
@@ -80,11 +80,11 @@ export default function ContactPage() {
                   {contactInfo.map((item) => (
                     <div
                       key={item.label}
-                      className="p-6 rounded-2xl bg-brand-dark/60 border border-brand-border/50"
+                      className="p-6 rounded-2xl bg-brand-dark/80 border border-brand-border/50"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-brand-teal/10 flex items-center justify-center">
-                          <item.icon className="text-brand-cyan" size={20} />
+                        <div className="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center">
+                          <item.icon className="text-brand-cyan-bright" size={20} />
                         </div>
                         <div>
                           <p className="text-xs text-brand-muted uppercase tracking-wider">
@@ -108,7 +108,7 @@ export default function ContactPage() {
                   ))}
                 </div>
 
-                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-brand-teal/10 to-brand-cyan/5 border border-brand-teal/20">
+                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-brand-cyan/10 to-brand-emerald/5 border border-brand-cyan/20">
                   <h3 className="text-lg font-bold text-brand-text">
                     Book a Discovery Call
                   </h3>
@@ -122,7 +122,7 @@ export default function ContactPage() {
                     Email{" "}
                     <a
                       href="mailto:hello@outpace.ie"
-                      className="text-brand-cyan hover:text-brand-teal transition-colors"
+                      className="text-brand-cyan-bright hover:text-brand-cyan transition-colors"
                     >
                       hello@outpace.ie
                     </a>{" "}
