@@ -1,6 +1,10 @@
-import { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import AnimatedSection from "@/components/AnimatedSection";
+import AnimatedText from "@/components/AnimatedText";
+import TiltCard from "@/components/TiltCard";
+import GlowOrb from "@/components/GlowOrb";
 import {
   ArrowRight,
   Handshake,
@@ -9,13 +13,8 @@ import {
   Lightbulb,
   MapPin,
   Globe,
+  Linkedin,
 } from "lucide-react";
-
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Outpace is a full-spectrum business development partner based in Limerick, Ireland — not another marketing agency. We own your growth pipeline from strategy to execution.",
-};
 
 const values = [
   {
@@ -42,19 +41,20 @@ const values = [
 
 const team = [
   {
-    name: "Coming Soon",
-    role: "Founder & Managing Director",
-    bio: "Details coming soon.",
+    name: "Colm Ring",
+    role: "Co-Founder & CEO",
+    initials: "CR",
+    bio: "Colm brings deep expertise in business strategy, operations, and commercial development. With a track record of building scalable systems and driving revenue growth, he leads Outpace's vision of integrated business development.",
+    linkedin: "https://www.linkedin.com/in/colm-ring",
+    gradient: "from-brand-cyan to-brand-teal",
   },
   {
-    name: "Coming Soon",
-    role: "Head of Growth",
-    bio: "Details coming soon.",
-  },
-  {
-    name: "Coming Soon",
-    role: "Creative Director",
-    bio: "Details coming soon.",
+    name: "Holly Purnell",
+    role: "Co-Founder & CMO",
+    initials: "HP",
+    bio: "Holly is the creative and strategic force behind Outpace's marketing engine. With expertise across digital marketing, brand building, content strategy, and campaign management, she ensures every client's story reaches the right audience.",
+    linkedin: "https://www.linkedin.com/in/holly-purnell",
+    gradient: "from-brand-emerald to-brand-cyan",
   },
 ];
 
@@ -62,15 +62,19 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-darkest overflow-hidden">
+        <GlowOrb color="rgba(34, 211, 238, 0.08)" size={600} top="-20%" left="-10%" duration={10} />
+        <GlowOrb color="rgba(52, 211, 153, 0.06)" size={400} bottom="-10%" right="-5%" delay={2} duration={12} />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
               About Outpace
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-text max-w-4xl leading-tight">
-              We&apos;re not an agency. We&apos;re your growth engine.
-            </h1>
+          </AnimatedSection>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-text max-w-4xl leading-tight">
+            <AnimatedText text="We're not an agency. We're your growth engine." delay={0.1} />
+          </h1>
+          <AnimatedSection delay={0.3}>
             <p className="mt-6 text-lg sm:text-xl text-brand-muted max-w-2xl leading-relaxed">
               Outpace is a full-stack business development partner that handles
               everything from strategy and lead generation to systems, content,
@@ -114,32 +118,40 @@ export default function AboutPage() {
 
             <AnimatedSection delay={0.2}>
               <div className="space-y-6">
-                <div className="p-6 rounded-2xl bg-brand-dark/80 border border-brand-border/50">
-                  <div className="flex items-center gap-3 mb-3">
-                    <MapPin className="text-brand-cyan-bright" size={20} />
-                    <h3 className="font-semibold text-brand-text">
-                      Based in Limerick
-                    </h3>
+                <TiltCard className="relative">
+                  <div className="p-6 rounded-2xl glass glass-hover card-shine">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center">
+                        <MapPin className="text-brand-cyan-bright" size={20} />
+                      </div>
+                      <h3 className="font-semibold text-brand-text">
+                        Based in Limerick
+                      </h3>
+                    </div>
+                    <p className="text-sm text-brand-muted leading-relaxed">
+                      Our home is in the heart of Ireland&apos;s Mid-West — a city
+                      with a thriving business community and a tradition of
+                      punching above its weight.
+                    </p>
                   </div>
-                  <p className="text-sm text-brand-muted leading-relaxed">
-                    Our home is in the heart of Ireland&apos;s Mid-West — a city
-                    with a thriving business community and a tradition of
-                    punching above its weight.
-                  </p>
-                </div>
-                <div className="p-6 rounded-2xl bg-brand-dark/80 border border-brand-border/50">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Globe className="text-brand-cyan-bright" size={20} />
-                    <h3 className="font-semibold text-brand-text">
-                      Working Globally
-                    </h3>
+                </TiltCard>
+                <TiltCard className="relative">
+                  <div className="p-6 rounded-2xl glass glass-hover card-shine">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center">
+                        <Globe className="text-brand-cyan-bright" size={20} />
+                      </div>
+                      <h3 className="font-semibold text-brand-text">
+                        Working Globally
+                      </h3>
+                    </div>
+                    <p className="text-sm text-brand-muted leading-relaxed">
+                      While we&apos;re proudly Irish, our clients and campaigns
+                      span across the UK, Europe, and beyond. Geography doesn&apos;t
+                      limit growth.
+                    </p>
                   </div>
-                  <p className="text-sm text-brand-muted leading-relaxed">
-                    While we&apos;re proudly Irish, our clients and campaigns
-                    span across the UK, Europe, and beyond. Geography doesn&apos;t
-                    limit growth.
-                  </p>
-                </div>
+                </TiltCard>
               </div>
             </AnimatedSection>
           </div>
@@ -163,15 +175,19 @@ export default function AboutPage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {values.map((v, i) => (
               <AnimatedSection key={v.title} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 hover:border-brand-cyan/30 transition-colors h-full">
-                  <v.icon className="text-brand-cyan-bright mb-4" size={28} />
-                  <h3 className="text-xl font-bold text-brand-text">
-                    {v.title}
-                  </h3>
-                  <p className="mt-3 text-brand-muted leading-relaxed">
-                    {v.desc}
-                  </p>
-                </div>
+                <TiltCard className="relative h-full">
+                  <div className="p-8 rounded-2xl glass glass-hover card-shine h-full">
+                    <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-4">
+                      <v.icon className="text-brand-cyan-bright" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-brand-text">
+                      {v.title}
+                    </h3>
+                    <p className="mt-3 text-brand-muted leading-relaxed">
+                      {v.desc}
+                    </p>
+                  </div>
+                </TiltCard>
               </AnimatedSection>
             ))}
           </div>
@@ -179,38 +195,66 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="py-24 sm:py-32 bg-brand-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-24 sm:py-32 bg-brand-darkest overflow-hidden">
+        <GlowOrb color="rgba(34, 211, 238, 0.06)" size={500} top="10%" right="-15%" delay={1} />
+        <GlowOrb color="rgba(52, 211, 153, 0.05)" size={400} bottom="5%" left="-10%" delay={3} />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
               <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
-                The Team
+                The Founders
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
                 The people behind Outpace
               </h2>
               <p className="mt-6 text-lg text-brand-muted">
-                A lean, senior team with deep expertise across business
-                development, technology, and creative.
+                Two founders with complementary expertise across business
+                development, marketing, and technology — driving growth for
+                ambitious companies.
               </p>
             </div>
           </AnimatedSection>
 
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {team.map((t, i) => (
-              <AnimatedSection key={i} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 text-center">
-                  <div className="w-20 h-20 rounded-full bg-brand-cyan/10 mx-auto mb-6 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-brand-cyan-bright">
-                      {t.name[0]}
-                    </span>
+              <AnimatedSection key={t.name} delay={i * 0.15}>
+                <TiltCard className="relative h-full">
+                  <div className="p-8 rounded-2xl glass card-shine h-full group">
+                    {/* Avatar */}
+                    <div className="relative mx-auto w-24 h-24 mb-6">
+                      <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${t.gradient} opacity-20 animate-pulse-glow`} />
+                      <div className="relative w-24 h-24 rounded-full bg-brand-dark border-2 border-brand-cyan/30 flex items-center justify-center group-hover:border-brand-cyan-bright transition-colors duration-300">
+                        <span className="text-2xl font-bold text-shimmer">
+                          {t.initials}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Info */}
+                    <div className="text-center">
+                      <h3 className="text-xl font-bold text-brand-text">
+                        {t.name}
+                      </h3>
+                      <p className="text-sm font-semibold text-brand-cyan-bright mt-1">
+                        {t.role}
+                      </p>
+                      <p className="mt-4 text-sm text-brand-muted leading-relaxed">
+                        {t.bio}
+                      </p>
+
+                      {/* LinkedIn */}
+                      <a
+                        href={t.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-lg bg-brand-cyan/10 text-brand-cyan-bright text-sm font-medium hover:bg-brand-cyan/20 hover:scale-105 transition-all duration-200"
+                      >
+                        <Linkedin size={16} />
+                        Connect on LinkedIn
+                      </a>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-bold text-brand-text">
-                    {t.name}
-                  </h3>
-                  <p className="text-sm text-brand-cyan mt-1">{t.role}</p>
-                  <p className="mt-3 text-sm text-brand-muted">{t.bio}</p>
-                </div>
+                </TiltCard>
               </AnimatedSection>
             ))}
           </div>
@@ -218,8 +262,11 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 sm:py-32 bg-brand-dark">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+      <section className="relative py-24 sm:py-32 bg-brand-dark overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-cyan/5 rounded-full blur-[150px]" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <AnimatedSection>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
               Want to know more?
@@ -231,10 +278,10 @@ export default function AboutPage() {
             <div className="mt-10">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg shadow-lg shadow-brand-cyan/25 transition-all duration-200 inline-flex items-center gap-2 text-lg"
+                className="group px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg shadow-lg shadow-brand-cyan/25 hover:shadow-brand-cyan/40 transition-all duration-300 inline-flex items-center gap-2 text-lg btn-ripple"
               >
                 Get in Touch
-                <ArrowRight size={20} />
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </AnimatedSection>

@@ -2,6 +2,12 @@
 
 import Link from "next/link";
 import AnimatedSection from "@/components/AnimatedSection";
+import AnimatedText from "@/components/AnimatedText";
+import ParticleField from "@/components/ParticleField";
+import GlowOrb from "@/components/GlowOrb";
+import TiltCard from "@/components/TiltCard";
+import CountUp from "@/components/CountUp";
+import MagneticButton from "@/components/MagneticButton";
 import {
   ArrowRight,
   Layers,
@@ -101,10 +107,10 @@ const process = [
 ];
 
 const stats = [
-  { value: "900+", label: "Contacts Reached" },
-  { value: "115", label: "Companies Targeted" },
-  { value: "3", label: "Video Series Produced" },
-  { value: "100%", label: "Client Retention" },
+  { value: 900, suffix: "+", label: "Contacts Reached" },
+  { value: 115, suffix: "", label: "Companies Targeted" },
+  { value: 3, suffix: "", label: "Video Series Produced" },
+  { value: 100, suffix: "%", label: "Client Retention" },
 ];
 
 export default function HomePage() {
@@ -113,10 +119,10 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-brand-darkest" />
-        <div className="absolute inset-0">
-          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-cyan/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-brand-emerald/[0.08] rounded-full blur-[120px]" />
-        </div>
+        <ParticleField />
+        <GlowOrb color="rgba(34, 211, 238, 0.12)" size={600} top="-20%" left="-10%" duration={10} />
+        <GlowOrb color="rgba(52, 211, 153, 0.08)" size={500} bottom="-20%" right="-10%" delay={2} duration={12} />
+        <GlowOrb color="rgba(8, 145, 178, 0.1)" size={300} top="40%" right="20%" delay={4} duration={9} />
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center pt-20">
           <AnimatedSection>
@@ -126,7 +132,7 @@ export default function HomePage() {
           </AnimatedSection>
           <AnimatedSection delay={0.1}>
             <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1]">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan-bright to-brand-emerald">
+              <span className="text-shimmer">
                 OUTPACE
               </span>
             </h1>
@@ -140,19 +146,23 @@ export default function HomePage() {
           </AnimatedSection>
           <AnimatedSection delay={0.3}>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg transition-all duration-200 inline-flex items-center gap-2 text-lg shadow-lg shadow-brand-cyan/25"
-              >
-                Book a Discovery Call
-                <ArrowRight size={20} />
-              </Link>
-              <Link
-                href="/services"
-                className="px-8 py-4 border border-brand-border hover:border-brand-muted text-brand-muted hover:text-white font-semibold rounded-lg transition-all duration-200 text-lg"
-              >
-                Explore Services
-              </Link>
+              <MagneticButton>
+                <Link
+                  href="/contact"
+                  className="group px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg transition-all duration-300 inline-flex items-center gap-2 text-lg shadow-lg shadow-brand-cyan/25 hover:shadow-brand-cyan/40 hover:scale-[1.02] btn-ripple"
+                >
+                  Book a Discovery Call
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </MagneticButton>
+              <MagneticButton>
+                <Link
+                  href="/services"
+                  className="px-8 py-4 border border-brand-border hover:border-brand-cyan/50 text-brand-muted hover:text-white font-semibold rounded-lg transition-all duration-300 text-lg hover:bg-white/5"
+                >
+                  Explore Services
+                </Link>
+              </MagneticButton>
             </div>
           </AnimatedSection>
         </div>
@@ -173,7 +183,7 @@ export default function HomePage() {
                 The Problem
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
-                Growth shouldn&apos;t be this fragmented
+                <AnimatedText text="Growth shouldn't be this fragmented" />
               </h2>
               <p className="mt-6 text-lg text-brand-muted leading-relaxed">
                 Most mid-market businesses are juggling 5-8 vendors just to keep
@@ -200,17 +210,21 @@ export default function HomePage() {
                 title: "No Ownership",
                 desc: "When leads go cold, everyone points fingers. No single partner owns the pipeline from start to finish.",
               },
-            ].map((item) => (
-              <AnimatedSection key={item.title}>
-                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 hover:border-brand-cyan/30 transition-colors">
-                  <item.icon className="text-brand-cyan-bright mb-4" size={28} />
-                  <h3 className="text-lg font-semibold text-brand-text">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-brand-muted text-sm leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
+            ].map((item, i) => (
+              <AnimatedSection key={item.title} delay={i * 0.1}>
+                <TiltCard className="relative h-full">
+                  <div className="p-8 rounded-2xl glass glass-hover card-shine h-full">
+                    <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4">
+                      <item.icon className="text-red-400" size={24} />
+                    </div>
+                    <h3 className="text-lg font-semibold text-brand-text">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-brand-muted text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </TiltCard>
               </AnimatedSection>
             ))}
           </div>
@@ -218,8 +232,9 @@ export default function HomePage() {
       </section>
 
       {/* Our Approach — Service Pillars */}
-      <section className="py-24 sm:py-32 bg-brand-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-24 sm:py-32 bg-brand-darkest overflow-hidden">
+        <GlowOrb color="rgba(34, 211, 238, 0.06)" size={400} top="20%" left="-10%" delay={1} />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
               <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-4">
@@ -238,17 +253,19 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {services.map((s, i) => (
               <AnimatedSection key={s.title} delay={i * 0.1}>
-                <div className="group p-8 rounded-2xl bg-brand-dark/50 border border-brand-border/50 hover:border-brand-cyan/40 transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6 group-hover:bg-brand-cyan/20 transition-colors">
-                    <s.icon className="text-brand-cyan-bright" size={24} />
+                <TiltCard className="relative h-full">
+                  <div className="group p-8 rounded-2xl glass glass-hover card-shine h-full">
+                    <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6 group-hover:bg-brand-cyan/20 group-hover:scale-110 transition-all duration-300">
+                      <s.icon className="text-brand-cyan-bright" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-brand-text">
+                      {s.title}
+                    </h3>
+                    <p className="mt-3 text-brand-muted leading-relaxed">
+                      {s.desc}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-brand-text">
-                    {s.title}
-                  </h3>
-                  <p className="mt-3 text-brand-muted leading-relaxed">
-                    {s.desc}
-                  </p>
-                </div>
+                </TiltCard>
               </AnimatedSection>
             ))}
           </div>
@@ -276,15 +293,19 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {usps.map((u, i) => (
               <AnimatedSection key={u.title} delay={i * 0.08}>
-                <div className="p-8 rounded-2xl bg-brand-dark/80 border border-brand-border/50 hover:border-brand-cyan/30 transition-colors h-full">
-                  <u.icon className="text-brand-cyan-bright mb-4" size={24} />
-                  <h3 className="text-lg font-semibold text-brand-text">
-                    {u.title}
-                  </h3>
-                  <p className="mt-2 text-brand-muted text-sm leading-relaxed">
-                    {u.desc}
-                  </p>
-                </div>
+                <TiltCard className="relative h-full">
+                  <div className="p-8 rounded-2xl glass glass-hover card-shine h-full">
+                    <div className="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center mb-4">
+                      <u.icon className="text-brand-cyan-bright" size={20} />
+                    </div>
+                    <h3 className="text-lg font-semibold text-brand-text">
+                      {u.title}
+                    </h3>
+                    <p className="mt-2 text-brand-muted text-sm leading-relaxed">
+                      {u.desc}
+                    </p>
+                  </div>
+                </TiltCard>
               </AnimatedSection>
             ))}
           </div>
@@ -292,8 +313,9 @@ export default function HomePage() {
       </section>
 
       {/* How We Work */}
-      <section className="py-24 sm:py-32 bg-brand-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-24 sm:py-32 bg-brand-darkest overflow-hidden">
+        <GlowOrb color="rgba(52, 211, 153, 0.06)" size={400} bottom="10%" right="-10%" delay={2} />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
               <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-4">
@@ -311,20 +333,22 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {process.map((p, i) => (
               <AnimatedSection key={p.title} delay={i * 0.1}>
-                <div className="relative p-8 rounded-2xl bg-brand-dark/50 border border-brand-border/50 hover:border-brand-cyan/40 transition-all duration-300">
-                  <span className="text-5xl font-extrabold text-brand-cyan/10 absolute top-4 right-6">
-                    {p.step}
-                  </span>
-                  <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6">
-                    <p.icon className="text-brand-cyan-bright" size={24} />
+                <TiltCard className="relative h-full">
+                  <div className="relative p-8 rounded-2xl glass glass-hover card-shine h-full group">
+                    <span className="text-5xl font-extrabold text-brand-cyan/10 absolute top-4 right-6 group-hover:text-brand-cyan/20 transition-colors duration-300">
+                      {p.step}
+                    </span>
+                    <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6 group-hover:bg-brand-cyan/20 group-hover:scale-110 transition-all duration-300">
+                      <p.icon className="text-brand-cyan-bright" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-brand-text">
+                      {p.title}
+                    </h3>
+                    <p className="mt-3 text-brand-muted text-sm leading-relaxed">
+                      {p.desc}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-brand-text">
-                    {p.title}
-                  </h3>
-                  <p className="mt-3 text-brand-muted text-sm leading-relaxed">
-                    {p.desc}
-                  </p>
-                </div>
+                </TiltCard>
               </AnimatedSection>
             ))}
           </div>
@@ -337,11 +361,13 @@ export default function HomePage() {
           <AnimatedSection>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((s) => (
-                <div key={s.label} className="text-center">
+                <div key={s.label} className="text-center group">
                   <p className="text-4xl sm:text-5xl font-extrabold text-brand-cyan-bright">
-                    {s.value}
+                    <CountUp end={s.value} suffix={s.suffix} />
                   </p>
-                  <p className="mt-2 text-sm text-brand-muted">{s.label}</p>
+                  <p className="mt-2 text-sm text-brand-muted group-hover:text-brand-text transition-colors">
+                    {s.label}
+                  </p>
                 </div>
               ))}
             </div>
@@ -350,24 +376,29 @@ export default function HomePage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-24 sm:py-32 bg-brand-dark">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+      <section className="relative py-24 sm:py-32 bg-brand-darkest overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-cyan/5 rounded-full blur-[200px] animate-pulse-glow" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <AnimatedSection>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
-              Ready to outpace your competition?
+              <AnimatedText text="Ready to outpace your competition?" />
             </h2>
             <p className="mt-6 text-lg text-brand-muted max-w-2xl mx-auto leading-relaxed">
               Book a free discovery call. We&apos;ll audit your current setup,
               identify the gaps, and show you exactly where the revenue is hiding.
             </p>
             <div className="mt-10">
-              <Link
-                href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg transition-all duration-200 inline-flex items-center gap-2 text-lg shadow-lg shadow-brand-cyan/25"
-              >
-                Book a Discovery Call
-                <ArrowRight size={20} />
-              </Link>
+              <MagneticButton>
+                <Link
+                  href="/contact"
+                  className="group px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg transition-all duration-300 inline-flex items-center gap-2 text-lg shadow-lg shadow-brand-cyan/25 hover:shadow-brand-cyan/40 hover:scale-[1.02] btn-ripple"
+                >
+                  Book a Discovery Call
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </MagneticButton>
             </div>
           </AnimatedSection>
         </div>
