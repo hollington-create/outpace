@@ -113,4 +113,7 @@ export interface DiscoveryPageConfig {
   systemPromptAdditions?: string;
   customQuestionFramework?: string;
   firstMessage?: string;
+  companyLogo?: string;
+  companyName?: string;
+  companyDescription?: string;
 }
