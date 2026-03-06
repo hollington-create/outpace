@@ -227,17 +227,9 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
 
       // Step 3: Start ConvAI session (mic already permitted)
       // Wrap in timeout to prevent infinite hang
+      console.log("[ConvAI] Calling startSession with signedUrl only (no overrides for debug)...");
       const sessionPromise = conversation.startSession({
         signedUrl,
-        overrides: {
-          agent: {
-            prompt: { prompt: systemPrompt },
-            firstMessage,
-          },
-          tts: {
-            voiceId: "hmMWXCj9K7N5mCPcRkfC", // Rory — Irish male
-          },
-        },
       });
 
       const timeoutPromise = new Promise<never>((_, reject) =>
