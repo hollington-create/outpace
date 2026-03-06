@@ -1,26 +1,6 @@
 import type { ExtractedConsultationData, DiscoveryPageConfig } from "./types";
 
-export function buildDiscoverySystemPrompt(
-  currentData: ExtractedConsultationData,
-  pageConfig?: DiscoveryPageConfig
-): string {
-  const industryContext = pageConfig
-    ? `\n\nThis prospect is in the ${pageConfig.industry} industry. Tailor your language, examples, and questions accordingly.${pageConfig.systemPromptAdditions ? "\n" + pageConfig.systemPromptAdditions : ""}`
-    : "";
-
-  return `You are a senior business development consultant for Outpace, a consultative growth partner based in Ireland. You are conducting a structured discovery consultation with a prospective client.
-
-## YOUR PERSONA
-- Friendly, professional, Irish business tone — warm but not casual
-- You are genuinely curious about their business — ask follow-ups when something interesting comes up
-- You are an expert in B2B growth: lead generation, digital presence, CRM/systems, content marketing, and client retention
-- You use the prospect's name and company name once you learn them
-- Keep responses concise — 2-4 sentences max, then ask your next question
-- Never list all your questions at once. Ask ONE question at a time, conversationally
-- Use natural transitions between topics — don't sound like a checklist
-${industryContext}
-
-## CONSULTATION FRAMEWORK
+const DEFAULT_FRAMEWORK = `## CONSULTATION FRAMEWORK
 
 ### Stage 1: Opening (Always start here)
 Ask these one at a time, conversationally:
@@ -58,7 +38,33 @@ Transition naturally:
 4. "What kind of monthly budget are you thinking about for growth services?"
 5. "When are you looking to get started?"
 
-After the last closing question, give a warm summary and explain the team will put together a tailored proposal within 24 hours.
+After the last closing question, give a warm summary and explain the team will put together a tailored proposal within 24 hours.`;
+
+export function buildDiscoverySystemPrompt(
+  currentData: ExtractedConsultationData,
+  pageConfig?: DiscoveryPageConfig
+): string {
+  const industryContext = pageConfig
+    ? `\n\nThis prospect is in the ${pageConfig.industry} industry. Tailor your language, examples, and questions accordingly.${pageConfig.systemPromptAdditions ? "\n" + pageConfig.systemPromptAdditions : ""}`
+    : "";
+
+  const framework = pageConfig?.customQuestionFramework
+    ? pageConfig.customQuestionFramework
+    : DEFAULT_FRAMEWORK;
+
+  return `You are a senior business development consultant for Outpace, a consultative growth partner based in Ireland. You are conducting a structured discovery consultation with a prospective client.
+
+## YOUR PERSONA
+- Friendly, professional, Irish business tone — warm but not casual
+- You are genuinely curious about their business — ask follow-ups when something interesting comes up
+- You are an expert in B2B growth: lead generation, digital presence, CRM/systems, content marketing, and client retention
+- You use the prospect's name and company name once you learn them
+- Keep responses concise — 2-4 sentences max, then ask your next question
+- Never list all your questions at once. Ask ONE question at a time, conversationally
+- Use natural transitions between topics — don't sound like a checklist
+${industryContext}
+
+${framework}
 
 ## DATA EXTRACTION
 After EVERY user response, you MUST call the updateConsultationData tool to update the structured data. Extract:

@@ -1,8 +1,9 @@
-import { streamText, tool } from "ai";
+import { streamText, tool, convertToModelMessages, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { buildDiscoverySystemPrompt } from "@/lib/discovery-prompt";
 import { createEmptyExtractedData } from "@/lib/consultation-defaults";
+import { PAGE_CONFIGS } from "@/lib/discovery-configs";
 import type {
   ExtractedConsultationData,
   ConsultationStage,
@@ -78,13 +79,17 @@ export async function POST(req: Request) {
   const messages = body.messages ?? [];
   const currentData: ExtractedConsultationData =
     body.currentData ?? createEmptyExtractedData();
+  const slug: string | undefined = body.slug;
+  const pageConfig = slug ? PAGE_CONFIGS[slug] : undefined;
 
-  const systemPrompt = buildDiscoverySystemPrompt(currentData);
+  const systemPrompt = buildDiscoverySystemPrompt(currentData, pageConfig);
+  const modelMessages = await convertToModelMessages(messages);
 
   const result = streamText({
     model: anthropic("claude-sonnet-4-20250514"),
     system: systemPrompt,
-    messages,
+    messages: modelMessages,
+    stopWhen: stepCountIs(2),
     tools: {
       updateConsultationData: tool({
         description:

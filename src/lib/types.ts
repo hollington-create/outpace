@@ -111,4 +111,5 @@ export interface DiscoveryPageConfig {
   valueProps: string[];
   industry: string;
   systemPromptAdditions?: string;
+  customQuestionFramework?: string;
 }

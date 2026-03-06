@@ -2,6 +2,10 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 
+interface UseVoiceOutputOptions {
+  onPlaybackEnd?: () => void;
+}
+
 interface UseVoiceOutputReturn {
   isPlaying: boolean;
   voiceOutputEnabled: boolean;
@@ -12,11 +16,13 @@ interface UseVoiceOutputReturn {
 
 const LS_KEY = "outpace-voice-output";
 
-export function useVoiceOutput(): UseVoiceOutputReturn {
+export function useVoiceOutput(options?: UseVoiceOutputOptions): UseVoiceOutputReturn {
   const [isPlaying, setIsPlaying] = useState(false);
   const [voiceOutputEnabled, setVoiceOutputEnabledState] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const urlRef = useRef<string | null>(null);
+  const onPlaybackEndRef = useRef(options?.onPlaybackEnd);
+  onPlaybackEndRef.current = options?.onPlaybackEnd;
 
   // Load preference from localStorage (client-side only)
   useEffect(() => {
@@ -76,6 +82,7 @@ export function useVoiceOutput(): UseVoiceOutputReturn {
           URL.revokeObjectURL(url);
           urlRef.current = null;
           audioRef.current = null;
+          onPlaybackEndRef.current?.();
         };
         audio.onerror = () => {
           console.error("Audio playback error");

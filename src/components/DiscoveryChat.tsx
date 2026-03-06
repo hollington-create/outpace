@@ -7,7 +7,7 @@ import type { ExtractedConsultationData } from "@/lib/types";
 import { createEmptyExtractedData } from "@/lib/consultation-defaults";
 import { useVoiceInput } from "@/hooks/useVoiceInput";
 import { useVoiceOutput } from "@/hooks/useVoiceOutput";
-import { Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import { Mic, MicOff, Volume2, VolumeX, Phone, PhoneOff } from "lucide-react";
 
 interface DiscoveryChatProps {
   slug?: string;
@@ -20,19 +20,30 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   const [started, setStarted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [consultationId, setConsultationId] = useState<string | null>(null);
+  const [voiceMode, setVoiceMode] = useState(false);
+  const voiceModeRef = useRef(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const extractedDataRef = useRef(extractedData);
   extractedDataRef.current = extractedData;
 
   // ── Voice hooks ──
+  const startListeningRef = useRef<() => void>(() => {});
+
+  const handlePlaybackEnd = useCallback(() => {
+    // Auto-listen after TTS finishes in voice mode
+    if (voiceModeRef.current) {
+      setTimeout(() => startListeningRef.current(), 400);
+    }
+  }, []);
+
   const {
     isPlaying,
     voiceOutputEnabled,
     setVoiceOutputEnabled,
     speakText,
     stopPlayback,
-  } = useVoiceOutput();
+  } = useVoiceOutput({ onPlaybackEnd: handlePlaybackEnd });
 
   const handleVoiceTranscript = useCallback(
     (text: string) => {
@@ -55,6 +66,10 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     onTranscript: handleVoiceTranscript,
     language: "en-IE",
   });
+
+  // Keep refs in sync
+  startListeningRef.current = startListening;
+  voiceModeRef.current = voiceMode;
 
   // ── Chat transport ──
   const transport = useMemo(
@@ -180,6 +195,17 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     }
   }, [messages, status, voiceOutputEnabled, speakText]);
 
+  // ── Voice mode: speak greeting on start ──
+  const greetingSpokenRef = useRef(false);
+  useEffect(() => {
+    if (voiceMode && started && messages.length === 0 && !greetingSpokenRef.current) {
+      greetingSpokenRef.current = true;
+      const greeting =
+        "Hi there! I'm your growth consultant from Outpace. I'd love to learn about your business and explore how we might help you grow. This'll take about 10 minutes. Let's get started — tell me a bit about what your company does?";
+      speakText(greeting);
+    }
+  }, [voiceMode, started, messages.length, speakText]);
+
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -205,6 +231,23 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     } else {
       stopPlayback(); // Interrupt any active TTS
       startListening();
+    }
+  };
+
+  const toggleVoiceMode = () => {
+    if (voiceMode) {
+      // Exit voice mode
+      setVoiceMode(false);
+      stopListening();
+      stopPlayback();
+    } else {
+      // Enter voice mode
+      setVoiceMode(true);
+      setVoiceOutputEnabled(true);
+      // Start listening immediately if chat is ready
+      if (status === "ready") {
+        setTimeout(() => startListening(), 300);
+      }
     }
   };
 
@@ -265,12 +308,27 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
           Our AI consultant will ask you a few questions about your business and
           identify specific growth opportunities. Takes about 10 minutes.
         </p>
-        <button
-          onClick={() => setStarted(true)}
-          className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/25"
-        >
-          Start consultation →
-        </button>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button
+            onClick={() => setStarted(true)}
+            className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/25"
+          >
+            Start consultation →
+          </button>
+          {micSupported && (
+            <button
+              onClick={() => {
+                setStarted(true);
+                setVoiceMode(true);
+                setVoiceOutputEnabled(true);
+              }}
+              className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-400 hover:to-purple-500 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-violet-500/25 flex items-center gap-2"
+            >
+              <Phone className="w-4 h-4" />
+              Voice consultation
+            </button>
+          )}
+        </div>
         <p className="text-slate-600 text-xs mt-4">
           No sign-up required · Completely free · Proposal within 24 hours
         </p>
@@ -280,7 +338,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
 
   // ── Active chat ──
   return (
-    <div className="flex flex-col h-[650px] max-h-[75vh] bg-[#0d1525] border border-slate-800 rounded-2xl overflow-hidden">
+    <div className="relative flex flex-col h-[650px] max-h-[75vh] bg-[#0d1525] border border-slate-800 rounded-2xl overflow-hidden">
       {/* ── Header ── */}
       <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
@@ -321,6 +379,25 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
               {progress}%
             </span>
           </div>
+          {/* Voice mode toggle */}
+          {micSupported && (
+            <button
+              onClick={toggleVoiceMode}
+              className={`p-1.5 rounded-lg transition-all duration-200 ${
+                voiceMode
+                  ? "bg-violet-500/20 text-violet-400 border border-violet-500/30"
+                  : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"
+              }`}
+              title={voiceMode ? "Exit voice mode" : "Voice mode"}
+              aria-label={voiceMode ? "Exit voice mode" : "Enter voice mode"}
+            >
+              {voiceMode ? (
+                <PhoneOff className="w-4 h-4" />
+              ) : (
+                <Phone className="w-4 h-4" />
+              )}
+            </button>
+          )}
           {/* Speaker toggle */}
           <button
             onClick={() => {
@@ -548,6 +625,116 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
 
         <div ref={messagesEndRef} />
       </div>
+
+      {/* ── Voice Mode Overlay ── */}
+      {voiceMode && (
+        <div className="absolute inset-0 bg-[#0d1525]/95 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
+          {/* End call button */}
+          <button
+            onClick={toggleVoiceMode}
+            className="absolute top-4 right-4 p-2 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 transition-all"
+            title="End voice consultation"
+          >
+            <PhoneOff className="w-5 h-5" />
+          </button>
+
+          {/* Stage label */}
+          <p className="text-slate-500 text-xs font-medium tracking-wider uppercase mb-8">
+            {stageLabels[extractedData.currentStage] ?? "Discovery"}
+          </p>
+
+          {/* Central mic/status area */}
+          <div className="relative mb-8">
+            {/* Pulsing rings when listening */}
+            {isListening && (
+              <>
+                <div className="absolute inset-0 -m-4 rounded-full bg-cyan-500/10 animate-ping" />
+                <div className="absolute inset-0 -m-8 rounded-full bg-cyan-500/5 animate-ping [animation-delay:300ms]" />
+              </>
+            )}
+            {/* Pulsing rings when AI is speaking */}
+            {isPlaying && (
+              <>
+                <div className="absolute inset-0 -m-4 rounded-full bg-violet-500/10 animate-ping" />
+                <div className="absolute inset-0 -m-8 rounded-full bg-violet-500/5 animate-ping [animation-delay:300ms]" />
+              </>
+            )}
+
+            <button
+              onClick={handleMicToggle}
+              disabled={status !== "ready" && !isListening}
+              className={`relative w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 ${
+                isListening
+                  ? "bg-cyan-500/20 border-2 border-cyan-400 shadow-lg shadow-cyan-500/30"
+                  : isPlaying
+                    ? "bg-violet-500/20 border-2 border-violet-400 shadow-lg shadow-violet-500/30"
+                    : status === "streaming" || status === "submitted"
+                      ? "bg-slate-800 border-2 border-slate-600"
+                      : "bg-slate-800/80 border-2 border-slate-600 hover:border-cyan-500/50 hover:bg-cyan-500/10"
+              } disabled:opacity-50`}
+            >
+              {isListening ? (
+                <Mic className="w-10 h-10 text-cyan-400" />
+              ) : isPlaying ? (
+                <Volume2 className="w-10 h-10 text-violet-400" />
+              ) : status === "streaming" || status === "submitted" ? (
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:0ms]" />
+                  <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:150ms]" />
+                  <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:300ms]" />
+                </div>
+              ) : (
+                <Mic className="w-10 h-10 text-slate-400" />
+              )}
+            </button>
+          </div>
+
+          {/* Status text */}
+          <p className={`text-sm font-medium mb-2 ${
+            isListening ? "text-cyan-400" : isPlaying ? "text-violet-400" : "text-slate-400"
+          }`}>
+            {isListening
+              ? "Listening..."
+              : isPlaying
+                ? "Speaking..."
+                : status === "streaming" || status === "submitted"
+                  ? "Thinking..."
+                  : "Tap to speak"}
+          </p>
+
+          {/* Live transcript / last message */}
+          <div className="px-8 text-center max-w-md min-h-[60px]">
+            {isListening && interimTranscript ? (
+              <p className="text-cyan-200 text-sm italic">&ldquo;{interimTranscript}&rdquo;</p>
+            ) : (
+              (() => {
+                const lastMsg = [...messages].reverse().find((m) => m.role === "assistant");
+                const text = lastMsg?.parts
+                  .filter(
+                    (p): p is { type: "text"; text: string } =>
+                      p.type === "text" && "text" in p
+                  )
+                  .map((p) => p.text)
+                  .join(" ");
+                return text ? (
+                  <p className="text-slate-400 text-xs leading-relaxed line-clamp-3">{text}</p>
+                ) : null;
+              })()
+            )}
+          </div>
+
+          {/* Progress bar at bottom */}
+          <div className="absolute bottom-6 left-8 right-8">
+            <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p className="text-slate-600 text-[10px] text-center mt-2">{progress}% complete</p>
+          </div>
+        </div>
+      )}
 
       {/* ── Input ── */}
       <form
