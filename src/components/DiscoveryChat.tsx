@@ -159,10 +159,10 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     }
   }, [messages, voiceMode]);
 
-  // Focus input after streaming completes (text mode)
+  // Focus input after streaming completes (text mode) — preventScroll stops page jumping
   useEffect(() => {
     if (status === "ready" && started && !voiceMode) {
-      inputRef.current?.focus();
+      inputRef.current?.focus({ preventScroll: true });
     }
   }, [status, started, voiceMode]);
 

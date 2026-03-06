@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import DiscoveryChat from "@/components/DiscoveryChat";
+import ScrollToTop from "@/components/ScrollToTop";
 import { PAGE_CONFIGS } from "@/lib/discovery-configs";
 
 export async function generateStaticParams() {
@@ -30,8 +31,9 @@ export default function PersonalisedDiscoveryPage({
 
   return (
     <div className="min-h-screen pt-8 pb-20">
+      <ScrollToTop />
       {/* ── Hero ── */}
-      <section className="pt-6 pb-4 px-6 relative overflow-hidden">
+      <section className="pt-6 pb-4 px-6 relative overflow-hidden" tabIndex={-1}>
         <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[-30%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
