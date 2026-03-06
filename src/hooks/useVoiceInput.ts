@@ -5,6 +5,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 interface UseVoiceInputOptions {
   onTranscript: (text: string) => void;
   onError?: (error: string) => void;
+  onEnd?: () => void;
   language?: string;
 }
 
@@ -28,6 +29,7 @@ const ERROR_MAP: Record<string, string> = {
 export function useVoiceInput({
   onTranscript,
   onError,
+  onEnd,
   language = "en-IE",
 }: UseVoiceInputOptions): UseVoiceInputReturn {
   const [isListening, setIsListening] = useState(false);
@@ -38,12 +40,15 @@ export function useVoiceInput({
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const onTranscriptRef = useRef(onTranscript);
   const onErrorRef = useRef(onError);
+  const onEndRef = useRef(onEnd);
+  const stoppedExplicitlyRef = useRef(false);
 
   // Keep callback refs current
   useEffect(() => {
     onTranscriptRef.current = onTranscript;
     onErrorRef.current = onError;
-  }, [onTranscript, onError]);
+    onEndRef.current = onEnd;
+  }, [onTranscript, onError, onEnd]);
 
   // Feature detection (client-side only)
   useEffect(() => {
@@ -59,6 +64,8 @@ export function useVoiceInput({
     if (recognitionRef.current) {
       try { recognitionRef.current.abort(); } catch {}
     }
+
+    stoppedExplicitlyRef.current = false;
 
     const recognition = new SR();
     recognition.lang = language;
@@ -94,6 +101,9 @@ export function useVoiceInput({
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      // Suppress no-speech — onend will fire and the caller can auto-restart
+      if (event.error === "no-speech") return;
+
       const msg = ERROR_MAP[event.error] ?? `Speech recognition error: ${event.error}`;
       if (msg) {
         setError(msg);
@@ -105,6 +115,9 @@ export function useVoiceInput({
 
     recognition.onend = () => {
       setIsListening(false);
+      if (!stoppedExplicitlyRef.current) {
+        onEndRef.current?.();
+      }
     };
 
     recognitionRef.current = recognition;
@@ -118,6 +131,7 @@ export function useVoiceInput({
   }, [language]);
 
   const stopListening = useCallback(() => {
+    stoppedExplicitlyRef.current = true;
     if (recognitionRef.current) {
       try { recognitionRef.current.stop(); } catch {}
     }

@@ -29,6 +29,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
 
   // ── Voice hooks ──
   const startListeningRef = useRef<() => void>(() => {});
+  const justSentRef = useRef(false);
 
   const handlePlaybackEnd = useCallback(() => {
     // Auto-listen after TTS finishes in voice mode
@@ -48,12 +49,30 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   const handleVoiceTranscript = useCallback(
     (text: string) => {
       if (text.trim() && status === "ready") {
+        justSentRef.current = true;
         sendMessageRef.current?.({ text });
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  // Auto-restart listening when recognition ends naturally in voice mode
+  const handleRecognitionEnd = useCallback(() => {
+    // If a message was just sent, don't restart — handlePlaybackEnd will after TTS
+    if (justSentRef.current) {
+      justSentRef.current = false;
+      return;
+    }
+    // Otherwise (e.g. no-speech timeout), restart immediately
+    if (voiceModeRef.current) {
+      setTimeout(() => {
+        if (voiceModeRef.current) {
+          startListeningRef.current();
+        }
+      }, 300);
+    }
+  }, []);
 
   const {
     isListening,
@@ -64,6 +83,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     error: voiceError,
   } = useVoiceInput({
     onTranscript: handleVoiceTranscript,
+    onEnd: handleRecognitionEnd,
     language: "en-IE",
   });
 
@@ -206,10 +226,12 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     }
   }, [voiceMode, started, messages.length, speakText]);
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom (skip in voice mode — overlay covers messages)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isListening, interimTranscript]);
+    if (!voiceMode) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isListening, interimTranscript, voiceMode]);
 
   // Focus input after streaming completes
   useEffect(() => {
@@ -699,7 +721,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
                 ? "Speaking..."
                 : status === "streaming" || status === "submitted"
                   ? "Thinking..."
-                  : "Tap to speak"}
+                  : "Listening..."}
           </p>
 
           {/* Live transcript / last message */}
