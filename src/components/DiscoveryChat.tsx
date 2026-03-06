@@ -86,7 +86,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   } = useVoiceInput({
     onTranscript: handleVoiceTranscript,
     onEnd: handleRecognitionEnd,
-    language: "en-IE",
+    language: "en-GB",
   });
 
   // Keep refs in sync

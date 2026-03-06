@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const trimmed = text.slice(0, 1000);
 
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/stream`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/stream?optimize_streaming_latency=4`,
       {
         method: "POST",
         headers: {

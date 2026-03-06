@@ -86,6 +86,9 @@ export function useVoiceInput({
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const result = event.results[i];
         if (result.isFinal) {
+          // Reject low-confidence results (phantom recognition from ambient noise)
+          const confidence = result[0].confidence;
+          if (confidence > 0 && confidence < 0.65) continue;
           final += result[0].transcript;
         } else {
           interim += result[0].transcript;
@@ -94,7 +97,7 @@ export function useVoiceInput({
 
       if (interim) setInterimTranscript(interim);
 
-      if (final.trim()) {
+      if (final.trim() && final.trim().length > 1) {
         setInterimTranscript("");
         onTranscriptRef.current(final.trim());
       }
