@@ -30,6 +30,9 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   // ── Voice hooks ──
   const startListeningRef = useRef<() => void>(() => {});
   const justSentRef = useRef(false);
+  const statusRef = useRef("ready");
+  const isPlayingRef = useRef(false);
+  const isListeningRef = useRef(false);
 
   const handlePlaybackEnd = useCallback(() => {
     // Auto-listen after TTS finishes in voice mode
@@ -48,12 +51,11 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
 
   const handleVoiceTranscript = useCallback(
     (text: string) => {
-      if (text.trim() && status === "ready") {
+      if (text.trim() && statusRef.current === "ready") {
         justSentRef.current = true;
         sendMessageRef.current?.({ text });
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -90,6 +92,8 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   // Keep refs in sync
   startListeningRef.current = startListening;
   voiceModeRef.current = voiceMode;
+  isPlayingRef.current = isPlaying;
+  isListeningRef.current = isListening;
 
   // ── Chat transport ──
   const transport = useMemo(
@@ -137,6 +141,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   // Ref for sendMessage so voice callback stays stable
   const sendMessageRef = useRef(sendMessage);
   sendMessageRef.current = sendMessage;
+  statusRef.current = status;
 
   // ── Supabase: create consultation on start ──
   useEffect(() => {
@@ -225,6 +230,20 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
       speakText(greeting);
     }
   }, [voiceMode, started, messages.length, speakText]);
+
+  // Safety net: if voice mode is on and we're idle, auto-start listening
+  // Catches any gap where the TTS → handlePlaybackEnd → startListening chain breaks
+  useEffect(() => {
+    if (!voiceMode || status !== "ready" || isListening || isPlaying) return;
+
+    const timer = setTimeout(() => {
+      if (voiceModeRef.current && !isPlayingRef.current && !isListeningRef.current && statusRef.current === "ready") {
+        startListeningRef.current();
+      }
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [voiceMode, status, isListening, isPlaying]);
 
   // Auto-scroll to bottom (skip in voice mode — overlay covers messages)
   useEffect(() => {
