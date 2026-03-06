@@ -24,6 +24,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   const [voiceMode, setVoiceMode] = useState(false);
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const extractedDataRef = useRef(extractedData);
   extractedDataRef.current = extractedData;
@@ -150,10 +151,11 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     });
   }, [messages, consultationId, status]);
 
-  // Auto-scroll (text mode only)
+  // Auto-scroll within chat container (text mode only)
   useEffect(() => {
-    if (!voiceMode) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!voiceMode && messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messages, voiceMode]);
 
@@ -543,7 +545,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
       )}
 
       {/* ── Messages (text mode) ── */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
         {/* Initial greeting (text mode only) */}
         {!voiceMode && messages.length === 0 && (
           <div className="flex gap-3">
