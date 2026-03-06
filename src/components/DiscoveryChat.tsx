@@ -221,11 +221,13 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
       }
 
       const { signedUrl, systemPrompt, firstMessage } = await res.json();
-      console.log("[ConvAI] Got signed URL, starting session...");
+      console.log("[ConvAI] Got signed URL:", signedUrl?.substring(0, 50) + "...");
+      console.log("[ConvAI] Prompt length:", systemPrompt?.length, "firstMessage length:", firstMessage?.length);
       setVoiceStep("Connecting...");
 
       // Step 3: Start ConvAI session (mic already permitted)
-      await conversation.startSession({
+      // Wrap in timeout to prevent infinite hang
+      const sessionPromise = conversation.startSession({
         signedUrl,
         overrides: {
           agent: {
@@ -237,7 +239,13 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
           },
         },
       });
-      console.log("[ConvAI] Session started successfully");
+
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("Connection timed out after 20s")), 20000)
+      );
+
+      const conversationId = await Promise.race([sessionPromise, timeoutPromise]);
+      console.log("[ConvAI] Session started successfully, id:", conversationId);
       setVoiceConnecting(false);
       setVoiceStep("");
     } catch (err) {
