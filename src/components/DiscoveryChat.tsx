@@ -36,8 +36,9 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
 
   const handlePlaybackEnd = useCallback(() => {
     // Auto-listen after TTS finishes in voice mode
+    // 800ms delay lets speaker audio fully dissipate before mic opens (prevents feedback)
     if (voiceModeRef.current) {
-      setTimeout(() => startListeningRef.current(), 400);
+      setTimeout(() => startListeningRef.current(), 800);
     }
   }, []);
 
@@ -197,6 +198,13 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
       }
     });
   }, [messages, consultationId, status]);
+
+  // ── Stop mic when TTS starts (prevent speaker→mic feedback loop) ──
+  useEffect(() => {
+    if (isPlaying && isListening) {
+      stopListening();
+    }
+  }, [isPlaying, isListening, stopListening]);
 
   // ── Voice output: speak new assistant messages ──
   const lastSpokenIdRef = useRef<string | null>(null);
