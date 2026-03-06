@@ -3,11 +3,10 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { useConversation } from "@elevenlabs/react";
 import type { ExtractedConsultationData } from "@/lib/types";
 import { createEmptyExtractedData } from "@/lib/consultation-defaults";
-import { useVoiceInput } from "@/hooks/useVoiceInput";
-import { useVoiceOutput } from "@/hooks/useVoiceOutput";
-import { Mic, MicOff, Volume2, VolumeX, Phone, PhoneOff } from "lucide-react";
+import { Mic, Volume2, Phone, PhoneOff } from "lucide-react";
 
 interface DiscoveryChatProps {
   slug?: string;
@@ -21,82 +20,32 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   const [inputValue, setInputValue] = useState("");
   const [consultationId, setConsultationId] = useState<string | null>(null);
   const [voiceMode, setVoiceMode] = useState(false);
-  const voiceModeRef = useRef(false);
+  const [voiceError, setVoiceError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const extractedDataRef = useRef(extractedData);
   extractedDataRef.current = extractedData;
 
-  // ── Voice hooks ──
-  const startListeningRef = useRef<() => void>(() => {});
-  const justSentRef = useRef(false);
-  const statusRef = useRef("ready");
-  const isPlayingRef = useRef(false);
-  const isListeningRef = useRef(false);
-
-  const handlePlaybackEnd = useCallback(() => {
-    // Auto-listen after TTS finishes in voice mode
-    // 800ms delay lets speaker audio fully dissipate before mic opens (prevents feedback)
-    if (voiceModeRef.current) {
-      setTimeout(() => startListeningRef.current(), 800);
-    }
-  }, []);
-
-  const {
-    isPlaying,
-    voiceOutputEnabled,
-    setVoiceOutputEnabled,
-    speakText,
-    stopPlayback,
-  } = useVoiceOutput({ onPlaybackEnd: handlePlaybackEnd });
-
-  const handleVoiceTranscript = useCallback(
-    (text: string) => {
-      if (text.trim() && statusRef.current === "ready") {
-        justSentRef.current = true;
-        sendMessageRef.current?.({ text });
-      }
+  // ── ElevenLabs ConvAI (voice mode) ──
+  const conversation = useConversation({
+    onConnect: () => {
+      console.log("[ConvAI] Connected");
+      setVoiceError(null);
     },
-    []
-  );
-
-  // Auto-restart listening when recognition ends naturally in voice mode
-  const handleRecognitionEnd = useCallback(() => {
-    // If a message was just sent, don't restart — handlePlaybackEnd will after TTS
-    if (justSentRef.current) {
-      justSentRef.current = false;
-      return;
-    }
-    // Otherwise (e.g. no-speech timeout), restart immediately
-    if (voiceModeRef.current) {
-      setTimeout(() => {
-        if (voiceModeRef.current) {
-          startListeningRef.current();
-        }
-      }, 300);
-    }
-  }, []);
-
-  const {
-    isListening,
-    isSupported: micSupported,
-    startListening,
-    stopListening,
-    interimTranscript,
-    error: voiceError,
-  } = useVoiceInput({
-    onTranscript: handleVoiceTranscript,
-    onEnd: handleRecognitionEnd,
-    language: "en-GB",
+    onDisconnect: () => {
+      console.log("[ConvAI] Disconnected");
+    },
+    onError: (err: string) => {
+      console.error("[ConvAI] Error:", err);
+      setVoiceError("Connection error. Please try again.");
+    },
   });
 
-  // Keep refs in sync
-  startListeningRef.current = startListening;
-  voiceModeRef.current = voiceMode;
-  isPlayingRef.current = isPlaying;
-  isListeningRef.current = isListening;
+  const isConvAIConnected = conversation.status === "connected";
+  const isConvAIConnecting = conversation.status === "connecting";
+  const isSpeaking = conversation.isSpeaking;
 
-  // ── Chat transport ──
+  // ── Chat transport (text mode) ──
   const transport = useMemo(
     () =>
       new DefaultChatTransport({
@@ -123,7 +72,6 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
         };
         if (result?.success && result?.data) {
           setExtractedData(result.data);
-          // Persist extracted data to Supabase
           if (consultationId) {
             fetch("/api/consultation", {
               method: "PATCH",
@@ -138,11 +86,6 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
       }
     },
   });
-
-  // Ref for sendMessage so voice callback stays stable
-  const sendMessageRef = useRef(sendMessage);
-  sendMessageRef.current = sendMessage;
-  statusRef.current = status;
 
   // ── Supabase: create consultation on start ──
   useEffect(() => {
@@ -163,7 +106,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     create();
   }, [started, consultationId, slug]);
 
-  // ── Supabase: save messages ──
+  // ── Supabase: save messages (text mode only) ──
   const savedMessageIds = useRef(new Set<string>());
   useEffect(() => {
     if (!consultationId || status !== "ready") return;
@@ -199,73 +142,96 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     });
   }, [messages, consultationId, status]);
 
-  // ── Stop mic when TTS starts (prevent speaker→mic feedback loop) ──
-  useEffect(() => {
-    if (isPlaying && isListening) {
-      stopListening();
-    }
-  }, [isPlaying, isListening, stopListening]);
-
-  // ── Voice output: speak new assistant messages ──
-  const lastSpokenIdRef = useRef<string | null>(null);
-  useEffect(() => {
-    if (status !== "ready" || !voiceOutputEnabled) return;
-
-    const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
-    if (!lastAssistant || lastAssistant.id === lastSpokenIdRef.current) return;
-
-    const textContent = lastAssistant.parts
-      .filter(
-        (p): p is { type: "text"; text: string } =>
-          p.type === "text" && "text" in p && (p as { text: string }).text.trim().length > 0
-      )
-      .map((p) => p.text)
-      .join(" ");
-
-    if (textContent) {
-      lastSpokenIdRef.current = lastAssistant.id;
-      speakText(textContent);
-    }
-  }, [messages, status, voiceOutputEnabled, speakText]);
-
-  // ── Voice mode: speak greeting on start ──
-  const greetingSpokenRef = useRef(false);
-  useEffect(() => {
-    if (voiceMode && started && messages.length === 0 && !greetingSpokenRef.current) {
-      greetingSpokenRef.current = true;
-      const greeting =
-        "Hi there! I'm your growth consultant from Outpace. I'd love to learn about your business and explore how we might help you grow. This'll take about 10 minutes. Let's get started — tell me a bit about what your company does?";
-      speakText(greeting);
-    }
-  }, [voiceMode, started, messages.length, speakText]);
-
-  // Safety net: if voice mode is on and we're idle, auto-start listening
-  // Catches any gap where the TTS → handlePlaybackEnd → startListening chain breaks
-  useEffect(() => {
-    if (!voiceMode || status !== "ready" || isListening || isPlaying) return;
-
-    const timer = setTimeout(() => {
-      if (voiceModeRef.current && !isPlayingRef.current && !isListeningRef.current && statusRef.current === "ready") {
-        startListeningRef.current();
-      }
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [voiceMode, status, isListening, isPlaying]);
-
-  // Auto-scroll to bottom (skip in voice mode — overlay covers messages)
+  // Auto-scroll (text mode only)
   useEffect(() => {
     if (!voiceMode) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, isListening, interimTranscript, voiceMode]);
+  }, [messages, voiceMode]);
 
-  // Focus input after streaming completes
+  // Focus input after streaming completes (text mode)
   useEffect(() => {
-    if (status === "ready" && started && !isListening) {
+    if (status === "ready" && started && !voiceMode) {
       inputRef.current?.focus();
     }
-  }, [status, started, isListening]);
+  }, [status, started, voiceMode]);
+
+  // ── Voice mode: start ConvAI session ──
+  const startVoiceSession = useCallback(async () => {
+    setVoiceError(null);
+
+    // Request microphone permission
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "NotAllowedError") {
+        setVoiceError(
+          "Microphone access denied. Please allow mic access in your browser settings."
+        );
+      } else if (err instanceof DOMException && err.name === "NotFoundError") {
+        setVoiceError("No microphone found. Please connect a microphone.");
+      } else {
+        setVoiceError("Could not access microphone. Please check your browser settings.");
+      }
+      return;
+    }
+
+    // Get signed URL + system prompt from server
+    try {
+      const res = await fetch("/api/elevenlabs/signed-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug,
+          currentData: extractedDataRef.current,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setVoiceError(data.error || "Failed to start voice session");
+        return;
+      }
+
+      const { signedUrl, systemPrompt, firstMessage } = await res.json();
+
+      await conversation.startSession({
+        signedUrl,
+        overrides: {
+          agent: {
+            prompt: { prompt: systemPrompt },
+            firstMessage,
+          },
+          tts: {
+            voiceId: "hmMWXCj9K7N5mCPcRkfC", // Rory — Irish male
+          },
+        },
+      });
+    } catch (err) {
+      console.error("[ConvAI] Start error:", err);
+      setVoiceError("Failed to start conversation. Please try again.");
+    }
+  }, [slug, conversation]);
+
+  const endVoiceSession = useCallback(async () => {
+    try {
+      await conversation.endSession();
+    } catch (err) {
+      console.error("[ConvAI] End error:", err);
+    }
+  }, [conversation]);
+
+  // Auto-start voice session when entering voice mode
+  const voiceStartedRef = useRef(false);
+  useEffect(() => {
+    if (voiceMode && started && conversation.status === "disconnected" && !voiceStartedRef.current) {
+      voiceStartedRef.current = true;
+      startVoiceSession();
+    }
+    if (!voiceMode) {
+      voiceStartedRef.current = false;
+    }
+  }, [voiceMode, started, conversation.status, startVoiceSession]);
 
   const handleSend = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -274,29 +240,15 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
     setInputValue("");
   };
 
-  const handleMicToggle = () => {
-    if (isListening) {
-      stopListening();
-    } else {
-      stopPlayback(); // Interrupt any active TTS
-      startListening();
-    }
-  };
-
-  const toggleVoiceMode = () => {
+  const toggleVoiceMode = async () => {
     if (voiceMode) {
       // Exit voice mode
       setVoiceMode(false);
-      stopListening();
-      stopPlayback();
+      await endVoiceSession();
     } else {
       // Enter voice mode
       setVoiceMode(true);
-      setVoiceOutputEnabled(true);
-      // Start listening immediately if chat is ready
-      if (status === "ready") {
-        setTimeout(() => startListening(), 300);
-      }
+      // startVoiceSession triggers via the useEffect above
     }
   };
 
@@ -362,24 +314,21 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
             onClick={() => setStarted(true)}
             className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/25"
           >
-            Start consultation →
+            Start consultation &rarr;
           </button>
-          {micSupported && (
-            <button
-              onClick={() => {
-                setStarted(true);
-                setVoiceMode(true);
-                setVoiceOutputEnabled(true);
-              }}
-              className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-400 hover:to-purple-500 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-violet-500/25 flex items-center gap-2"
-            >
-              <Phone className="w-4 h-4" />
-              Voice consultation
-            </button>
-          )}
+          <button
+            onClick={() => {
+              setStarted(true);
+              setVoiceMode(true);
+            }}
+            className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-400 hover:to-purple-500 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-violet-500/25 flex items-center gap-2"
+          >
+            <Phone className="w-4 h-4" />
+            Voice consultation
+          </button>
         </div>
         <p className="text-slate-600 text-xs mt-4">
-          No sign-up required · Completely free · Proposal within 24 hours
+          No sign-up required &middot; Completely free &middot; Proposal within 24 hours
         </p>
       </div>
     );
@@ -402,8 +351,8 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
               <p className="text-white font-semibold text-sm">
                 Growth Consultant
               </p>
-              {/* Audio playing indicator */}
-              {isPlaying && (
+              {/* Audio playing indicator (voice mode) */}
+              {isSpeaking && (
                 <div className="flex items-center gap-0.5" aria-hidden="true">
                   <div className="w-0.5 h-3 bg-cyan-400 rounded-full animate-pulse" />
                   <div className="w-0.5 h-4 bg-cyan-400 rounded-full animate-pulse [animation-delay:150ms]" />
@@ -429,42 +378,21 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
             </span>
           </div>
           {/* Voice mode toggle */}
-          {micSupported && (
-            <button
-              onClick={toggleVoiceMode}
-              className={`p-1.5 rounded-lg transition-all duration-200 ${
-                voiceMode
-                  ? "bg-violet-500/20 text-violet-400 border border-violet-500/30"
-                  : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"
-              }`}
-              title={voiceMode ? "Exit voice mode" : "Voice mode"}
-              aria-label={voiceMode ? "Exit voice mode" : "Enter voice mode"}
-            >
-              {voiceMode ? (
-                <PhoneOff className="w-4 h-4" />
-              ) : (
-                <Phone className="w-4 h-4" />
-              )}
-            </button>
-          )}
-          {/* Speaker toggle */}
           <button
-            onClick={() => {
-              if (voiceOutputEnabled) stopPlayback();
-              setVoiceOutputEnabled(!voiceOutputEnabled);
-            }}
+            onClick={toggleVoiceMode}
+            disabled={isConvAIConnecting}
             className={`p-1.5 rounded-lg transition-all duration-200 ${
-              voiceOutputEnabled
-                ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
+              voiceMode
+                ? "bg-violet-500/20 text-violet-400 border border-violet-500/30"
                 : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"
-            }`}
-            title={voiceOutputEnabled ? "Mute voice" : "Enable voice"}
-            aria-label={voiceOutputEnabled ? "Mute voice output" : "Enable voice output"}
+            } disabled:opacity-50`}
+            title={voiceMode ? "Exit voice mode" : "Voice mode"}
+            aria-label={voiceMode ? "Exit voice mode" : "Enter voice mode"}
           >
-            {voiceOutputEnabled ? (
-              <Volume2 className="w-4 h-4" />
+            {voiceMode ? (
+              <PhoneOff className="w-4 h-4" />
             ) : (
-              <VolumeX className="w-4 h-4" />
+              <Phone className="w-4 h-4" />
             )}
           </button>
           {/* Data panel toggle */}
@@ -566,10 +494,10 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
         </div>
       )}
 
-      {/* ── Messages ── */}
+      {/* ── Messages (text mode) ── */}
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-        {/* Initial greeting */}
-        {messages.length === 0 && (
+        {/* Initial greeting (text mode only) */}
+        {!voiceMode && messages.length === 0 && (
           <div className="flex gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-[10px] font-bold shrink-0">
               OP
@@ -639,8 +567,8 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
           );
         })}
 
-        {/* Typing indicator */}
-        {(status === "streaming" || status === "submitted") && (
+        {/* Typing indicator (text mode) */}
+        {!voiceMode && (status === "streaming" || status === "submitted") && (
           <div className="flex gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-[10px] font-bold shrink-0">
               OP
@@ -655,27 +583,10 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
           </div>
         )}
 
-        {/* Listening indicator */}
-        {isListening && (
-          <div className="flex gap-3 justify-end">
-            <div className="bg-cyan-500/15 border border-cyan-500/25 rounded-2xl rounded-tr-sm px-4 py-3">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-                <span className="text-cyan-300 text-sm">
-                  {interimTranscript || "Listening..."}
-                </span>
-              </div>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 text-[10px] font-bold shrink-0">
-              You
-            </div>
-          </div>
-        )}
-
         <div ref={messagesEndRef} />
       </div>
 
-      {/* ── Voice Mode Overlay ── */}
+      {/* ── Voice Mode Overlay (ConvAI) ── */}
       {voiceMode && (
         <div className="absolute inset-0 bg-[#0d1525]/95 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
           {/* End call button */}
@@ -692,84 +603,94 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
             {stageLabels[extractedData.currentStage] ?? "Discovery"}
           </p>
 
-          {/* Central mic/status area */}
+          {/* Central status area */}
           <div className="relative mb-8">
-            {/* Pulsing rings when listening */}
-            {isListening && (
+            {/* Pulsing rings when listening (connected, not speaking) */}
+            {isConvAIConnected && !isSpeaking && (
               <>
                 <div className="absolute inset-0 -m-4 rounded-full bg-cyan-500/10 animate-ping" />
                 <div className="absolute inset-0 -m-8 rounded-full bg-cyan-500/5 animate-ping [animation-delay:300ms]" />
               </>
             )}
             {/* Pulsing rings when AI is speaking */}
-            {isPlaying && (
+            {isSpeaking && (
               <>
                 <div className="absolute inset-0 -m-4 rounded-full bg-violet-500/10 animate-ping" />
                 <div className="absolute inset-0 -m-8 rounded-full bg-violet-500/5 animate-ping [animation-delay:300ms]" />
               </>
             )}
 
-            <button
-              onClick={handleMicToggle}
-              disabled={status !== "ready" && !isListening}
+            <div
               className={`relative w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 ${
-                isListening
+                isConvAIConnected && !isSpeaking
                   ? "bg-cyan-500/20 border-2 border-cyan-400 shadow-lg shadow-cyan-500/30"
-                  : isPlaying
+                  : isSpeaking
                     ? "bg-violet-500/20 border-2 border-violet-400 shadow-lg shadow-violet-500/30"
-                    : status === "streaming" || status === "submitted"
-                      ? "bg-slate-800 border-2 border-slate-600"
-                      : "bg-slate-800/80 border-2 border-slate-600 hover:border-cyan-500/50 hover:bg-cyan-500/10"
-              } disabled:opacity-50`}
+                    : isConvAIConnecting
+                      ? "bg-slate-800 border-2 border-slate-600 animate-pulse"
+                      : "bg-slate-800/80 border-2 border-slate-600"
+              }`}
             >
-              {isListening ? (
+              {isConvAIConnected && !isSpeaking ? (
                 <Mic className="w-10 h-10 text-cyan-400" />
-              ) : isPlaying ? (
+              ) : isSpeaking ? (
                 <Volume2 className="w-10 h-10 text-violet-400" />
-              ) : status === "streaming" || status === "submitted" ? (
+              ) : isConvAIConnecting ? (
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:0ms]" />
                   <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:150ms]" />
                   <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:300ms]" />
                 </div>
               ) : (
-                <Mic className="w-10 h-10 text-slate-400" />
+                <Phone className="w-10 h-10 text-slate-400" />
               )}
-            </button>
+            </div>
           </div>
 
           {/* Status text */}
-          <p className={`text-sm font-medium mb-2 ${
-            isListening ? "text-cyan-400" : isPlaying ? "text-violet-400" : "text-slate-400"
-          }`}>
-            {isListening
+          <p
+            className={`text-sm font-medium mb-2 ${
+              isConvAIConnected && !isSpeaking
+                ? "text-cyan-400"
+                : isSpeaking
+                  ? "text-violet-400"
+                  : isConvAIConnecting
+                    ? "text-slate-400"
+                    : "text-slate-500"
+            }`}
+          >
+            {isConvAIConnected && !isSpeaking
               ? "Listening..."
-              : isPlaying
+              : isSpeaking
                 ? "Speaking..."
-                : status === "streaming" || status === "submitted"
-                  ? "Thinking..."
-                  : "Listening..."}
+                : isConvAIConnecting
+                  ? "Connecting..."
+                  : "Starting..."}
           </p>
 
-          {/* Live transcript / last message */}
+          {/* Context text */}
           <div className="px-8 text-center max-w-md min-h-[60px]">
-            {isListening && interimTranscript ? (
-              <p className="text-cyan-200 text-sm italic">&ldquo;{interimTranscript}&rdquo;</p>
-            ) : (
-              (() => {
-                const lastMsg = [...messages].reverse().find((m) => m.role === "assistant");
-                const text = lastMsg?.parts
-                  .filter(
-                    (p): p is { type: "text"; text: string } =>
-                      p.type === "text" && "text" in p
-                  )
-                  .map((p) => p.text)
-                  .join(" ");
-                return text ? (
-                  <p className="text-slate-400 text-xs leading-relaxed line-clamp-3">{text}</p>
-                ) : null;
-              })()
-            )}
+            {isConvAIConnected ? (
+              <p className="text-slate-400 text-xs leading-relaxed">
+                {isSpeaking
+                  ? "The consultant is speaking. Just listen and respond naturally."
+                  : "Speak naturally. The consultant is listening."}
+              </p>
+            ) : isConvAIConnecting ? (
+              <p className="text-slate-500 text-xs">
+                Setting up your voice consultation...
+              </p>
+            ) : voiceError ? (
+              <div className="text-center">
+                <p className="text-red-400 text-xs mb-3">{voiceError}</p>
+                <button
+                  onClick={startVoiceSession}
+                  className="text-xs text-cyan-400 hover:text-cyan-300 font-medium"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : null}
           </div>
 
           {/* Progress bar at bottom */}
@@ -780,58 +701,37 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="text-slate-600 text-[10px] text-center mt-2">{progress}% complete</p>
+            <p className="text-slate-600 text-[10px] text-center mt-2">
+              {progress}% complete
+            </p>
           </div>
         </div>
       )}
 
-      {/* ── Input ── */}
+      {/* ── Input (text mode) ── */}
       <form
         onSubmit={handleSend}
         className="px-6 py-4 border-t border-slate-800 flex gap-3 shrink-0"
       >
         <input
           ref={inputRef}
-          value={isListening ? interimTranscript : inputValue}
+          value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder={
             isComplete
               ? "Consultation complete — thank you!"
-              : isListening
-                ? "Listening..."
-                : "Type or tap the mic..."
+              : voiceMode
+                ? "Voice mode active — speak naturally"
+                : "Type your message..."
           }
-          disabled={status !== "ready" || isComplete || isListening}
-          readOnly={isListening}
+          disabled={status !== "ready" || isComplete || voiceMode}
           className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 transition-all disabled:opacity-50"
         />
-
-        {/* Mic button (Chrome/Edge only) */}
-        {micSupported && !isComplete && (
-          <button
-            type="button"
-            onClick={handleMicToggle}
-            disabled={status !== "ready" && !isListening}
-            className={`p-3 rounded-xl transition-all duration-200 shrink-0 ${
-              isListening
-                ? "bg-red-500/20 text-red-400 border border-red-500/30 animate-mic-pulse"
-                : "bg-slate-800/50 border border-slate-700 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30"
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-            title={isListening ? "Stop recording" : "Start voice input"}
-            aria-label={isListening ? "Stop recording" : "Start voice input"}
-          >
-            {isListening ? (
-              <MicOff className="w-4 h-4" />
-            ) : (
-              <Mic className="w-4 h-4" />
-            )}
-          </button>
-        )}
 
         {/* Send button */}
         <button
           type="submit"
-          disabled={!inputValue.trim() || status !== "ready" || isComplete}
+          disabled={!inputValue.trim() || status !== "ready" || isComplete || voiceMode}
           className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold px-5 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20 disabled:opacity-50 disabled:cursor-not-allowed text-sm shrink-0"
         >
           <svg
@@ -851,14 +751,14 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
       </form>
 
       {/* Errors */}
-      {error && (
+      {error && !voiceMode && (
         <div className="px-6 py-3 bg-red-500/10 border-t border-red-500/20 shrink-0">
           <p className="text-red-400 text-xs">
             Something went wrong. Please try again.
           </p>
         </div>
       )}
-      {voiceError && (
+      {voiceError && voiceMode && (
         <div className="px-6 py-3 bg-amber-500/10 border-t border-amber-500/20 shrink-0">
           <p className="text-amber-400 text-xs">{voiceError}</p>
         </div>
