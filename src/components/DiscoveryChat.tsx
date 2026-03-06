@@ -157,27 +157,19 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
   }, [status, started, voiceMode]);
 
   // ── Voice mode: start ConvAI session ──
+  const [voiceConnecting, setVoiceConnecting] = useState(false);
+  const [voiceStep, setVoiceStep] = useState("");
+
   const startVoiceSession = useCallback(async () => {
     setVoiceError(null);
-
-    // Request microphone permission
-    try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (err) {
-      if (err instanceof DOMException && err.name === "NotAllowedError") {
-        setVoiceError(
-          "Microphone access denied. Please allow mic access in your browser settings."
-        );
-      } else if (err instanceof DOMException && err.name === "NotFoundError") {
-        setVoiceError("No microphone found. Please connect a microphone.");
-      } else {
-        setVoiceError("Could not access microphone. Please check your browser settings.");
-      }
-      return;
-    }
+    setVoiceConnecting(true);
+    setVoiceStep("Fetching session...");
+    console.log("[ConvAI] Starting voice session...");
 
     // Get signed URL + system prompt from server
+    // (ElevenLabs SDK handles mic permission internally via startSession)
     try {
+      console.log("[ConvAI] Fetching signed URL...");
       const res = await fetch("/api/elevenlabs/signed-url", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -188,12 +180,16 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setVoiceError(data.error || "Failed to start voice session");
+        const errData = await res.json().catch(() => ({}));
+        console.error("[ConvAI] Signed URL error:", res.status, errData);
+        setVoiceConnecting(false);
+        setVoiceError(errData.error || "Failed to start voice session");
         return;
       }
 
       const { signedUrl, systemPrompt, firstMessage } = await res.json();
+      console.log("[ConvAI] Got signed URL, starting session...");
+      setVoiceStep("Connecting...");
 
       await conversation.startSession({
         signedUrl,
@@ -207,9 +203,21 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
           },
         },
       });
+      console.log("[ConvAI] Session started successfully");
+      setVoiceConnecting(false);
+      setVoiceStep("");
     } catch (err) {
       console.error("[ConvAI] Start error:", err);
-      setVoiceError("Failed to start conversation. Please try again.");
+      setVoiceConnecting(false);
+      setVoiceStep("");
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes("Permission") || msg.includes("NotAllowed") || msg.includes("permission")) {
+        setVoiceError("Microphone access denied. Please allow mic access in your browser settings.");
+      } else if (msg.includes("NotFound") || msg.includes("no audio")) {
+        setVoiceError("No microphone found. Please connect a microphone.");
+      } else {
+        setVoiceError(`Failed to start conversation: ${msg}`);
+      }
     }
   }, [slug, conversation]);
 
@@ -626,7 +634,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
                   ? "bg-cyan-500/20 border-2 border-cyan-400 shadow-lg shadow-cyan-500/30"
                   : isSpeaking
                     ? "bg-violet-500/20 border-2 border-violet-400 shadow-lg shadow-violet-500/30"
-                    : isConvAIConnecting
+                    : (isConvAIConnecting || voiceConnecting)
                       ? "bg-slate-800 border-2 border-slate-600 animate-pulse"
                       : "bg-slate-800/80 border-2 border-slate-600"
               }`}
@@ -635,7 +643,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
                 <Mic className="w-10 h-10 text-cyan-400" />
               ) : isSpeaking ? (
                 <Volume2 className="w-10 h-10 text-violet-400" />
-              ) : isConvAIConnecting ? (
+              ) : (isConvAIConnecting || voiceConnecting) ? (
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:0ms]" />
                   <div className="w-2.5 h-2.5 bg-cyan-400/50 rounded-full animate-bounce [animation-delay:150ms]" />
@@ -654,7 +662,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
                 ? "text-cyan-400"
                 : isSpeaking
                   ? "text-violet-400"
-                  : isConvAIConnecting
+                  : (isConvAIConnecting || voiceConnecting)
                     ? "text-slate-400"
                     : "text-slate-500"
             }`}
@@ -663,9 +671,11 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
               ? "Listening..."
               : isSpeaking
                 ? "Speaking..."
-                : isConvAIConnecting
-                  ? "Connecting..."
-                  : "Starting..."}
+                : (isConvAIConnecting || voiceConnecting)
+                  ? (voiceStep || "Connecting...")
+                  : voiceError
+                    ? "Connection failed"
+                    : "Starting..."}
           </p>
 
           {/* Context text */}
@@ -676,7 +686,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
                   ? "The consultant is speaking. Just listen and respond naturally."
                   : "Speak naturally. The consultant is listening."}
               </p>
-            ) : isConvAIConnecting ? (
+            ) : (isConvAIConnecting || voiceConnecting) ? (
               <p className="text-slate-500 text-xs">
                 Setting up your voice consultation...
               </p>
@@ -684,7 +694,10 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
               <div className="text-center">
                 <p className="text-red-400 text-xs mb-3">{voiceError}</p>
                 <button
-                  onClick={startVoiceSession}
+                  onClick={() => {
+                    voiceStartedRef.current = false;
+                    startVoiceSession();
+                  }}
                   className="text-xs text-cyan-400 hover:text-cyan-300 font-medium"
                 >
                   Try Again
