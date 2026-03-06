@@ -112,4 +112,5 @@ export interface DiscoveryPageConfig {
   industry: string;
   systemPromptAdditions?: string;
   customQuestionFramework?: string;
+  firstMessage?: string;
 }

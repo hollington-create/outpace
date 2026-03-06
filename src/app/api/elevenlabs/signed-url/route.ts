@@ -36,9 +36,16 @@ export async function POST(req: NextRequest) {
     const pageConfig = slug ? PAGE_CONFIGS[slug] : undefined;
     const systemPrompt = buildDiscoverySystemPrompt(currentData, pageConfig);
 
-    // Build first message
-    const firstMessage =
-      "Hi there! I'm your growth consultant from Outpace. I'd love to learn about your business and explore how we might help you grow. This'll take about 10 minutes. Let's get started — tell me a bit about what your company does?";
+    // Build first message — personalized if we have page config
+    let firstMessage: string;
+    if (pageConfig?.customQuestionFramework) {
+      // Custom page (e.g. RAYN) — the agent already knows the company
+      firstMessage = pageConfig.firstMessage ||
+        `Hi there! I'm your growth consultant from Outpace. We've done some homework on your business already, so this won't be a cold start — I've got a good sense of what you do. I'd love to dig into the specifics with you and find the biggest growth opportunities. Should only take about 10 minutes. So tell me — how's business been going lately?`;
+    } else {
+      firstMessage =
+        "Hi there! I'm your growth consultant from Outpace. I'd love to learn about your business and explore how we might help you grow. This'll take about 10 minutes. Let's get started — tell me a bit about what your company does?";
+    }
 
     // Get signed URL from ElevenLabs
     const response = await fetch(

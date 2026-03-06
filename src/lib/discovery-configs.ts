@@ -78,6 +78,8 @@ export const PAGE_CONFIGS: Record<string, DiscoveryPageConfig> = {
       "Pipeline & CRM for long sales cycles",
     ],
     industry: "Security & Safety",
+    firstMessage:
+      "Hi! I'm your growth consultant from Outpace. We've already done some research on RAYN — I know you're Ireland's leading independent security and safety provider, you've got the full end-to-end offering with TotalSafe, offices in Limerick and Dublin, and some serious clients like the HSE and Defence Forces. So this won't be a cold start — I want to dig into where the real growth opportunities are. How's business been going lately?",
     customQuestionFramework: `## ABOUT THIS PROSPECT
 You are speaking with someone from RAYN Safety & Security (rayn.ie). Here is what you already know about them — use this context to ask smarter questions, but DO NOT recite it back to them:
 - Ireland's leading independent security and safety provider

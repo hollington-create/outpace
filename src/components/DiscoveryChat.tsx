@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useConversation } from "@elevenlabs/react";
 import type { ExtractedConsultationData } from "@/lib/types";
 import { createEmptyExtractedData } from "@/lib/consultation-defaults";
+import { PAGE_CONFIGS } from "@/lib/discovery-configs";
 import { Mic, Volume2, Phone, PhoneOff } from "lucide-react";
 
 interface DiscoveryChatProps {
@@ -13,6 +14,7 @@ interface DiscoveryChatProps {
 }
 
 export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
+  const pageConfig = slug ? PAGE_CONFIGS[slug] : undefined;
   const [extractedData, setExtractedData] =
     useState<ExtractedConsultationData>(createEmptyExtractedData());
   const [showDataPanel, setShowDataPanel] = useState(false);
@@ -546,17 +548,25 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
               OP
             </div>
             <div className="bg-slate-800/50 border border-slate-700/40 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
-              <p className="text-slate-200 text-sm leading-relaxed">
-                Hi there! 👋 I&apos;m your growth consultant from Outpace.
-                I&apos;d love to learn about your business and explore how we
-                might help you grow. This&apos;ll take about 10 minutes, and
-                we&apos;ll have a tailored proposal ready for you within 24
-                hours.
-              </p>
-              <p className="text-slate-200 text-sm leading-relaxed mt-2">
-                Let&apos;s get started — tell me a bit about what your company
-                does?
-              </p>
+              {pageConfig?.firstMessage ? (
+                <p className="text-slate-200 text-sm leading-relaxed">
+                  {pageConfig.firstMessage}
+                </p>
+              ) : (
+                <>
+                  <p className="text-slate-200 text-sm leading-relaxed">
+                    Hi there! 👋 I&apos;m your growth consultant from Outpace.
+                    I&apos;d love to learn about your business and explore how we
+                    might help you grow. This&apos;ll take about 10 minutes, and
+                    we&apos;ll have a tailored proposal ready for you within 24
+                    hours.
+                  </p>
+                  <p className="text-slate-200 text-sm leading-relaxed mt-2">
+                    Let&apos;s get started — tell me a bit about what your company
+                    does?
+                  </p>
+                </>
+              )}
             </div>
           </div>
         )}
