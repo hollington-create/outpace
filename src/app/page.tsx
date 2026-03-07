@@ -330,7 +330,7 @@ export default function HomePage() {
                 href="/what-we-do"
                 className="text-brand-cyan-bright font-semibold inline-flex items-center gap-2 hover:gap-3 transition-all group"
               >
-                See all 40+ services
+                See all 10 pillars
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
