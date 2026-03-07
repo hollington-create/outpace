@@ -33,13 +33,36 @@ import {
 } from "lucide-react";
 import ParticleField from "@/components/ParticleField";
 import GlowOrb from "@/components/GlowOrb";
-import AnimatedText from "@/components/AnimatedText";
+import AccentHeading from "@/components/AccentHeading";
+import Marquee from "@/components/Marquee";
 import MagneticButton from "@/components/MagneticButton";
 import TiltCard from "@/components/TiltCard";
+import LogoCloud from "@/components/LogoCloud";
+import {
+  OUTBOUND_LOGOS,
+  DIGITAL_LOGOS,
+  SYSTEMS_LOGOS,
+  AI_LOGOS,
+} from "@/lib/brand-logos";
+import type { BrandLogoEntry } from "@/lib/brand-logos";
 
 /* ───── Data ───── */
 
-const pillars = [
+interface Pillar {
+  id: string;
+  number: string;
+  title: string;
+  subtitle: string;
+  desc: string;
+  gradient: string;
+  glowColor: string;
+  iconBg: string;
+  iconColor: string;
+  features: { icon: React.ElementType; text: string }[];
+  logos?: BrandLogoEntry[];
+}
+
+const pillars: Pillar[] = [
   {
     id: "analysis",
     number: "01",
@@ -71,11 +94,9 @@ const pillars = [
       { icon: Mail, text: "B2B email sequences with personalised copy" },
       { icon: Phone, text: "AI-powered outbound calling at scale" },
       { icon: Users, text: "Scraped & verified prospect lists" },
-      {
-        icon: CalendarCheck,
-        text: "Meeting booking & handoff to your sales team",
-      },
+      { icon: CalendarCheck, text: "Meeting booking & handoff to your sales team" },
     ],
+    logos: OUTBOUND_LOGOS,
   },
   {
     id: "digital",
@@ -93,6 +114,7 @@ const pillars = [
       { icon: Megaphone, text: "Paid advertising (Google, LinkedIn, Meta)" },
       { icon: Share2, text: "Social media management & content" },
     ],
+    logos: DIGITAL_LOGOS,
   },
   {
     id: "systems",
@@ -110,6 +132,7 @@ const pillars = [
       { icon: Workflow, text: "Process mapping & efficiency improvements" },
       { icon: BarChart3, text: "Reporting dashboards & KPI tracking" },
     ],
+    logos: SYSTEMS_LOGOS,
   },
   {
     id: "content",
@@ -140,43 +163,11 @@ const pillars = [
     iconColor: "text-cyan-400",
     features: [
       { icon: Bot, text: "AI voice agents for discovery & outbound calls" },
-      {
-        icon: MessageSquare,
-        text: "24/7 chatbot lead qualification on your site",
-      },
+      { icon: MessageSquare, text: "24/7 chatbot lead qualification on your site" },
       { icon: BrainCircuit, text: "Auto-generated tailored proposals" },
-      {
-        icon: MousePointerClick,
-        text: "Personalised prospect landing pages",
-      },
+      { icon: MousePointerClick, text: "Personalised prospect landing pages" },
     ],
-  },
-];
-
-const processSteps = [
-  {
-    step: "01",
-    title: "Diagnose",
-    desc: "Deep-dive into your business, market, and growth blockers",
-    icon: Search,
-  },
-  {
-    step: "02",
-    title: "Design",
-    desc: "Custom strategy across the pillars that matter most",
-    icon: Sparkles,
-  },
-  {
-    step: "03",
-    title: "Deploy",
-    desc: "Execute with speed — campaigns, systems, content, all live",
-    icon: Zap,
-  },
-  {
-    step: "04",
-    title: "Drive",
-    desc: "Optimise, report, scale — continuous improvement loop",
-    icon: TrendingUp,
+    logos: AI_LOGOS,
   },
 ];
 
@@ -224,7 +215,7 @@ function PillarSection({
   pillar,
   index,
 }: {
-  pillar: (typeof pillars)[0];
+  pillar: Pillar;
   index: number;
 }) {
   const ref = useRef(null);
@@ -233,7 +224,14 @@ function PillarSection({
 
   return (
     <section ref={ref} id={pillar.id} className="relative py-24 sm:py-32">
-      {/* Background glow for this section */}
+      {/* Huge watermark number */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <span className={`text-[12rem] sm:text-[16rem] font-black bg-gradient-to-br ${pillar.gradient} bg-clip-text text-transparent opacity-[0.03]`}>
+          {pillar.number}
+        </span>
+      </div>
+
+      {/* Background glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -245,14 +243,12 @@ function PillarSection({
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ${!isEven ? "lg:direction-rtl" : ""}`}
         >
-          {/* Left: Text */}
           <motion.div
             initial={{ opacity: 0, x: isEven ? -60 : 60 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: "easeOut" }}
             className={!isEven ? "lg:order-2" : ""}
           >
-            {/* Pillar number */}
             <motion.span
               initial={{ opacity: 0, scale: 0.5 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -262,7 +258,7 @@ function PillarSection({
               {pillar.number}
             </motion.span>
 
-            <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-white">
+            <h2 className="mt-2 text-3xl sm:text-4xl font-bold font-display text-white">
               {pillar.title}
             </h2>
 
@@ -277,7 +273,6 @@ function PillarSection({
             </p>
           </motion.div>
 
-          {/* Right: Feature cards */}
           <div className={`space-y-3 ${!isEven ? "lg:order-1" : ""}`}>
             {pillar.features.map((f, i) => (
               <FeatureRow
@@ -289,6 +284,11 @@ function PillarSection({
                 index={i}
               />
             ))}
+            {pillar.logos && (
+              <div className="pt-4">
+                <LogoCloud logos={pillar.logos} size={22} />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -322,11 +322,9 @@ function ServiceNav() {
                     active === p.id ? "border-white/20 bg-white/[0.06]" : ""
                   }`}
                 >
-                  {/* Hover gradient overlay */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${p.gradient} opacity-0 group-hover:opacity-[0.08] transition-opacity duration-500`}
                   />
-
                   <span
                     className={`relative text-xs font-bold bg-gradient-to-r ${p.gradient} bg-clip-text text-transparent`}
                   >
@@ -338,81 +336,12 @@ function ServiceNav() {
                   <p className="relative text-sm font-semibold text-white/40 leading-tight">
                     {p.title.split(" ").slice(2).join(" ")}
                   </p>
-
-                  {/* Bottom accent line */}
                   <div
                     className={`absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r ${p.gradient} transition-all duration-500`}
                   />
                 </div>
               </TiltCard>
             </motion.a>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ───── Process Section ───── */
-
-function Process() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
-  return (
-    <section ref={ref} className="relative py-24 sm:py-32 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.03] to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            className="text-cyan-400 font-semibold text-sm uppercase tracking-[0.2em] mb-4"
-          >
-            Our Process
-          </motion.p>
-          <AnimatedText
-            text="Four steps from stuck to scaling"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {processSteps.map((step, i) => (
-            <motion.div
-              key={step.step}
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-            >
-              <TiltCard className="h-full">
-                <div className="relative h-full p-6 rounded-2xl border border-white/5 bg-white/[0.02] card-shine group hover:border-cyan-500/20 transition-all duration-500">
-                  {/* Step number */}
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-5xl font-black text-white/5 group-hover:text-cyan-400/10 transition-colors duration-500">
-                      {step.step}
-                    </span>
-                    <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors duration-300">
-                      <step.icon className="text-cyan-400" size={24} />
-                    </div>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    {step.desc}
-                  </p>
-
-                  {/* Connecting line (not on last) */}
-                  {i < processSteps.length - 1 && (
-                    <div className="hidden lg:block absolute -right-3 top-1/2 w-6 h-[2px] bg-gradient-to-r from-cyan-500/30 to-transparent" />
-                  )}
-                </div>
-              </TiltCard>
-            </motion.div>
           ))}
         </div>
       </div>
@@ -434,10 +363,7 @@ function StatsBar() {
   ];
 
   return (
-    <div
-      ref={ref}
-      className="relative py-16 border-y border-white/5 bg-white/[0.01]"
-    >
+    <div ref={ref} className="relative py-16 border-y border-white/5 bg-white/[0.01]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
@@ -464,7 +390,7 @@ function StatsBar() {
 
 /* ───── Page ───── */
 
-export default function ServicesPage() {
+export default function WhatWeDoPage() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -480,26 +406,12 @@ export default function ServicesPage() {
         ref={heroRef}
         className="relative pt-32 pb-8 sm:pt-40 sm:pb-12 overflow-hidden"
       >
-        {/* Particle background */}
         <div className="absolute inset-0">
           <ParticleField />
         </div>
 
-        {/* Glow orbs */}
-        <GlowOrb
-          color="rgba(34, 211, 238, 0.12)"
-          size={500}
-          top="10%"
-          left="-5%"
-          delay={0}
-        />
-        <GlowOrb
-          color="rgba(52, 211, 153, 0.08)"
-          size={400}
-          top="60%"
-          left="70%"
-          delay={2}
-        />
+        <GlowOrb color="rgba(34, 211, 238, 0.12)" size={500} top="10%" left="-5%" delay={0} />
+        <GlowOrb color="rgba(52, 211, 153, 0.08)" size={400} top="60%" left="70%" delay={2} />
 
         <motion.div
           style={{ opacity: heroOpacity, y: heroY }}
@@ -514,12 +426,11 @@ export default function ServicesPage() {
               What We Do
             </p>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white max-w-5xl leading-[1.05]">
-              Everything you need to{" "}
-              <span className="text-shimmer">grow.</span>
-              <br />
-              Nothing you don&apos;t.
-            </h1>
+            <AccentHeading
+              as="h1"
+              text="Everything you need to **grow.** Nothing you don't."
+              className="text-5xl sm:text-6xl lg:text-7xl font-black font-display text-brand-text max-w-5xl leading-[1.05]"
+            />
 
             <p className="mt-8 text-xl text-slate-400 max-w-2xl leading-relaxed">
               Six integrated service pillars covering the entire business
@@ -534,10 +445,7 @@ export default function ServicesPage() {
                   className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/25 transition-all duration-300 inline-flex items-center gap-2 text-lg"
                 >
                   Book a Discovery Call
-                  <ArrowRight
-                    size={20}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </MagneticButton>
               <MagneticButton>
@@ -553,6 +461,9 @@ export default function ServicesPage() {
         </motion.div>
       </section>
 
+      {/* ── Marquee ── */}
+      <Marquee />
+
       {/* ── Quick-nav cards ── */}
       <ServiceNav />
 
@@ -566,13 +477,10 @@ export default function ServicesPage() {
 
       {/* ── Divider ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+        <div className="gradient-divider" />
       </div>
 
-      {/* ── Process ── */}
-      <Process />
-
-      {/* ── CTA ── */}
+      {/* ── CTA → How We Do It ── */}
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-transparent to-[#0a0f1a]" />
@@ -586,25 +494,30 @@ export default function ServicesPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
-              Not sure what you need?
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white">
+              Want to see how we put this into action?
             </h2>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-              That&apos;s exactly why we start with a discovery call. We&apos;ll
-              figure out where the biggest opportunities are and build a plan
-              around them.
+              Our proven four-step process takes you from stuck to scaling.
+              Every engagement follows the same battle-tested framework.
             </p>
-            <div className="mt-10">
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <MagneticButton>
+                <Link
+                  href="/how-we-do-it"
+                  className="group px-8 py-4 border-2 border-brand-cyan/50 hover:border-brand-cyan text-white font-semibold rounded-xl transition-all duration-300 inline-flex items-center gap-2 text-lg hover:bg-brand-cyan/10"
+                >
+                  See Our Process
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </MagneticButton>
               <MagneticButton>
                 <Link
                   href="/contact"
-                  className="group px-10 py-5 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold rounded-xl shadow-xl shadow-cyan-500/30 transition-all duration-300 inline-flex items-center gap-3 text-xl"
+                  className="group px-10 py-4 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold rounded-xl shadow-xl shadow-cyan-500/30 transition-all duration-300 inline-flex items-center gap-3 text-lg"
                 >
                   Book a Discovery Call
-                  <ArrowRight
-                    size={22}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </MagneticButton>
             </div>

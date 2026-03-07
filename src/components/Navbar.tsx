@@ -8,8 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
+  { href: "/what-we-do", label: "What We Do" },
+  { href: "/who-we-are", label: "Who We Are" },
+  { href: "/how-we-do-it", label: "How We Do It" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/contact", label: "Contact" },
 ];
@@ -23,8 +24,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-extrabold tracking-tight text-brand-text">
-              OUTPACE
+            <span className="text-3xl tracking-tight text-shimmer">
+              <span className="font-extrabold">OUT</span><span className="font-light">PACE</span><span className="text-brand-cyan-bright font-extrabold">.</span>
             </span>
           </Link>
 

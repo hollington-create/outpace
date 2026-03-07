@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import AnimatedSection from "@/components/AnimatedSection";
-import AnimatedText from "@/components/AnimatedText";
+import AccentHeading from "@/components/AccentHeading";
 import TiltCard from "@/components/TiltCard";
 import GlowOrb from "@/components/GlowOrb";
 import {
@@ -58,7 +58,7 @@ const team = [
   },
 ];
 
-export default function AboutPage() {
+export default function WhoWeArePage() {
   return (
     <>
       {/* Hero */}
@@ -68,12 +68,15 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
-              About Outpace
+              Who We Are
             </p>
           </AnimatedSection>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-text max-w-4xl leading-tight">
-            <AnimatedText text="We're not an agency. We're your growth engine." delay={0.1} />
-          </h1>
+          <AccentHeading
+            as="h1"
+            text="We're not an agency. We're your **growth engine.**"
+            className="text-4xl sm:text-5xl lg:text-7xl font-extrabold font-display text-brand-text max-w-4xl leading-tight"
+            delay={0.1}
+          />
           <AnimatedSection delay={0.3}>
             <p className="mt-6 text-lg sm:text-xl text-brand-muted max-w-2xl leading-relaxed">
               Outpace is a full-stack business development partner that handles
@@ -92,7 +95,7 @@ export default function AboutPage() {
               <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
                 Our Story
               </p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-brand-text">
+              <h2 className="text-3xl sm:text-4xl font-bold font-display text-brand-text">
                 Built from frustration with the status quo
               </h2>
               <div className="mt-6 space-y-4 text-brand-muted leading-relaxed">
@@ -166,9 +169,10 @@ export default function AboutPage() {
               <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
                 Our Values
               </p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
-                How we operate
-              </h2>
+              <AccentHeading
+                text="How we **operate.**"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-brand-text"
+              />
             </div>
           </AnimatedSection>
 
@@ -181,7 +185,7 @@ export default function AboutPage() {
                       <v.icon className="text-brand-cyan-bright" size={24} />
                     </div>
                     <h3 className="text-xl font-bold text-brand-text">
-                      {v.title}
+                      {v.title}<span className="text-brand-cyan-bright">.</span>
                     </h3>
                     <p className="mt-3 text-brand-muted leading-relaxed">
                       {v.desc}
@@ -204,9 +208,10 @@ export default function AboutPage() {
               <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-4">
                 The Founders
               </p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
-                The people behind Outpace
-              </h2>
+              <AccentHeading
+                text="The people behind **Outpace.**"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-brand-text"
+              />
               <p className="mt-6 text-lg text-brand-muted">
                 Two founders with complementary expertise across business
                 development, marketing, and technology — driving growth for
@@ -219,12 +224,13 @@ export default function AboutPage() {
             {team.map((t, i) => (
               <AnimatedSection key={t.name} delay={i * 0.15}>
                 <TiltCard className="relative h-full">
-                  <div className="p-8 rounded-2xl glass card-shine h-full group">
-                    {/* Avatar */}
-                    <div className="relative mx-auto w-24 h-24 mb-6">
-                      <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${t.gradient} opacity-20 animate-pulse-glow`} />
-                      <div className="relative w-24 h-24 rounded-full bg-brand-dark border-2 border-brand-cyan/30 flex items-center justify-center group-hover:border-brand-cyan-bright transition-colors duration-300">
-                        <span className="text-2xl font-bold text-shimmer">
+                  <div className="p-8 rounded-2xl glass card-shine h-full group hover:border-brand-cyan/30 transition-all duration-500" style={{ border: '1px solid rgba(51, 65, 85, 0.5)' }}>
+                    {/* Avatar with grayscale→color effect */}
+                    <div className="relative mx-auto w-28 h-28 mb-6">
+                      <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${t.gradient} opacity-20 group-hover:opacity-40 transition-opacity duration-500 animate-pulse-glow`} />
+                      <div className="relative w-28 h-28 rounded-full bg-brand-dark border-2 border-brand-border group-hover:border-brand-cyan-bright transition-all duration-500 flex items-center justify-center overflow-hidden grayscale group-hover:grayscale-0">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} opacity-30 group-hover:opacity-50 transition-opacity duration-500`} />
+                        <span className="relative text-3xl font-bold text-shimmer">
                           {t.initials}
                         </span>
                       </div>
@@ -242,7 +248,6 @@ export default function AboutPage() {
                         {t.bio}
                       </p>
 
-                      {/* LinkedIn */}
                       <a
                         href={t.linkedin}
                         target="_blank"
@@ -268,14 +273,22 @@ export default function AboutPage() {
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <AnimatedSection>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-text">
-              Want to know more?
-            </h2>
+            <AccentHeading
+              text="Want to see how we **work?**"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-brand-text"
+            />
             <p className="mt-6 text-lg text-brand-muted max-w-2xl mx-auto leading-relaxed">
-              We&apos;d love to hear about your business and explore how Outpace
-              can help you grow.
+              Our proven four-step framework turns insight into revenue.
+              See exactly how we take you from stuck to scaling.
             </p>
-            <div className="mt-10">
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/how-we-do-it"
+                className="group px-8 py-4 border-2 border-brand-cyan/50 hover:border-brand-cyan text-white font-semibold rounded-lg transition-all duration-300 inline-flex items-center gap-2 text-lg hover:bg-brand-cyan/10"
+              >
+                See Our Process
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
               <Link
                 href="/contact"
                 className="group px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white font-semibold rounded-lg shadow-lg shadow-brand-cyan/25 hover:shadow-brand-cyan/40 transition-all duration-300 inline-flex items-center gap-2 text-lg btn-ripple"

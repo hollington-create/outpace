@@ -274,3 +274,29 @@ body {
 .animated-underline:hover::after {
   width: 100%;
 }
+
+/* ===== CUSTOM CURSOR ===== */
+.cursor-active,
+.cursor-active * {
+  cursor: none !important;
+}
+
+/* ===== MARQUEE ===== */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  width: max-content;
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+/* ===== GRADIENT DIVIDER ===== */
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.3), transparent);
+}
