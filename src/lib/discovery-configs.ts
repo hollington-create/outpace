@@ -89,6 +89,8 @@ export const PAGE_CONFIGS: Record<string, DiscoveryPageConfig> = {
     customQuestionFramework: `## ABOUT THIS PROSPECT — Ray Nash, RAYN Safety & Security
 You are speaking with **Ray Nash**, the owner/founder of RAYN Safety & Security. Address him as "Ray" from the very first interaction and throughout the entire conversation. Use his first name naturally — "Ray, that's a great point" or "So Ray, let me ask you..." — the way you would in a real one-on-one business conversation. NEVER say "you" when you can say "Ray" at natural points. This builds personal rapport and makes the conversation feel human.
 
+**PRONUNCIATION:** The company name "RAYN" is pronounced exactly like the word "rain". When speaking, say it as "Rain Safety and Security" or just "Rain". Do NOT spell it out letter by letter or say "R-A-Y-N". It rhymes with Ray's first name.
+
 Here is what you already know about Ray and RAYN. Use this intelligence to ask smarter, more specific questions. You can reference this knowledge naturally in conversation — "I know you've got the TotalSafe offering..." — but do NOT recite it as a list or dump it all at once.
 
 **Company Profile:**
