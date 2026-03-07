@@ -5,7 +5,7 @@ import Image from "next/image";
 
 /*
   Honeycomb grid matching cube.irish layout exactly:
-  - Pointy-top hexagons with white borders
+  - Pointy-top hexagons with thick white borders
   - Staggered rows (odd rows offset right by half a hex)
   - Mix of photo hexagons, empty (dark) hexagons, and gold accent hexagons
   - Dark background
@@ -30,7 +30,7 @@ const honeycombRows: HexCell[][] = [
   // Row 1: 3 cells (offset right)
   [
     { type: "image", src: "/images/facility-f7.jpg", alt: "Quality control process" },
-    { type: "logo", src: "/images/cube-icon.png", alt: "Cube logo" },
+    { type: "logo", src: "/images/cube-icon-gold.jpg", alt: "Cube logo" },
     { type: "image", src: "/images/hex-h7.jpg", alt: "Production inspection" },
   ],
   // Row 2: 4 cells
@@ -62,6 +62,9 @@ const HEX_SIZE = 22; // % of container width
 const H_GAP = 0.8; // horizontal gap %
 const V_OVERLAP = 5; // vertical overlap % (honeycomb interlock — tighter pack)
 
+// Calculate centering offset: 4 cols * (22 + 0.8) = 91.2, so offset = (100 - 91.2) / 2 ≈ 4.4%
+const CENTER_OFFSET = (100 - 4 * (HEX_SIZE + H_GAP)) / 2;
+
 function getHexPosition(
   row: number,
   col: number,
@@ -72,7 +75,7 @@ function getHexPosition(
   const offsetX = isOffsetRow ? colWidth / 2 : 0;
 
   return {
-    left: `${col * colWidth + offsetX}%`,
+    left: `${col * colWidth + offsetX + CENTER_OFFSET}%`,
     top: `${row * rowHeight}%`,
   };
 }
@@ -105,9 +108,9 @@ function HexCell({
       >
         <div className="absolute inset-0 bg-white" />
 
-        {/* Inner hex (inset for border effect) */}
+        {/* Inner hex (inset for thick border effect) */}
         <div
-          className="absolute inset-[5px] overflow-hidden"
+          className="absolute inset-[4px] sm:inset-[6px] lg:inset-[8px] overflow-hidden"
           style={{ clipPath: hexClip }}
         >
           {cell.type === "image" && (
@@ -124,15 +127,13 @@ function HexCell({
           )}
 
           {cell.type === "logo" && (
-            <div className="w-full h-full bg-[#D4A014] flex items-center justify-center">
-              <Image
-                src={cell.src}
-                alt={cell.alt}
-                width={70}
-                height={70}
-                className="object-contain drop-shadow-lg"
-              />
-            </div>
+            <Image
+              src={cell.src}
+              alt={cell.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 25vw, 180px"
+            />
           )}
 
           {cell.type === "empty" && (
