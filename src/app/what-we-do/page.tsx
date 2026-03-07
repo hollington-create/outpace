@@ -78,6 +78,7 @@ interface Pillar {
   iconColor: string;
   features: { icon: React.ElementType; text: string }[];
   logos?: BrandLogoEntry[];
+  serviceLink?: string; // link to dedicated landing page
 }
 
 const pillars: Pillar[] = [
@@ -116,6 +117,7 @@ const pillars: Pillar[] = [
       { icon: CalendarCheck, text: "Meeting booking & handoff to your sales team" },
     ],
     logos: OUTBOUND_LOGOS,
+    serviceLink: "/services/lead-generation",
   },
   {
     id: "digital",
@@ -134,6 +136,7 @@ const pillars: Pillar[] = [
       { icon: Share2, text: "Social media management & content" },
     ],
     logos: DIGITAL_LOGOS,
+    serviceLink: "/services/digital-presence",
   },
   {
     id: "systems",
@@ -188,6 +191,7 @@ const pillars: Pillar[] = [
       { icon: MousePointerClick, text: "Personalised prospect landing pages" },
     ],
     logos: AI_LOGOS,
+    serviceLink: "/services/ai-growth-tools",
   },
   {
     id: "sales",
@@ -205,6 +209,7 @@ const pillars: Pillar[] = [
       { icon: Workflow, text: "Sales process mapping & optimisation" },
       { icon: Trophy, text: "Win/loss analysis & pipeline reviews" },
     ],
+    serviceLink: "/services/sales-enablement",
   },
   {
     id: "retention",
@@ -359,6 +364,16 @@ function PillarSection({
             <p className="mt-6 text-slate-400 leading-relaxed text-lg">
               {pillar.desc}
             </p>
+
+            {pillar.serviceLink && (
+              <Link
+                href={pillar.serviceLink}
+                className={`mt-6 inline-flex items-center gap-2 font-semibold text-sm bg-gradient-to-r ${pillar.gradient} bg-clip-text text-transparent hover:gap-3 transition-all duration-300 group`}
+              >
+                Learn more
+                <ArrowRight size={16} className={`${pillar.iconColor} group-hover:translate-x-1 transition-transform`} />
+              </Link>
+            )}
           </motion.div>
 
           <div className={`space-y-3 ${!isEven ? "lg:order-1" : ""}`}>
