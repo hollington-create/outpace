@@ -120,6 +120,13 @@ export default function CaseStudyContent() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 sm:pt-40 sm:pb-28">
           <AnimatedSection>
+            <Image
+              src="/images/cube-logo-wide.png"
+              alt="Cube Printing"
+              width={180}
+              height={70}
+              className="mb-8"
+            />
             <p className="text-brand-cyan-bright font-semibold text-sm uppercase tracking-[0.2em] mb-6">
               Case Study
             </p>
