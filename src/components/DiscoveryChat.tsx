@@ -656,9 +656,9 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
             <PhoneOff className="w-5 h-5" />
           </button>
 
-          {/* Stage label */}
+          {/* Outpace label */}
           <p className="text-slate-500 text-xs font-medium tracking-wider uppercase mb-8">
-            {stageLabels[extractedData.currentStage] ?? "Discovery"}
+            Outpace Discovery
           </p>
 
           {/* Central status area */}
@@ -756,16 +756,10 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
             ) : null}
           </div>
 
-          {/* Progress bar at bottom */}
+          {/* Bottom label */}
           <div className="absolute bottom-6 left-8 right-8">
-            <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full transition-all duration-700 ease-out"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <p className="text-slate-600 text-[10px] text-center mt-2">
-              {progress}% complete
+            <p className="text-slate-600 text-[10px] text-center">
+              Voice consultation in progress
             </p>
           </div>
         </div>

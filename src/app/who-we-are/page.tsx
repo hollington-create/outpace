@@ -30,7 +30,7 @@ const values = [
   {
     icon: Flame,
     title: "Relentless Execution",
-    desc: "Strategy without execution is a slideshow. We ship fast, iterate faster, and never settle for 'good enough.'",
+    desc: "Ideas are easy. Shipping is hard. We launch fast, test everything, and never settle for 'good enough' when there's a better version within reach.",
   },
   {
     icon: Lightbulb,
@@ -44,7 +44,7 @@ const team = [
     name: "Colm Ring",
     role: "Co-Founder & CEO",
     initials: "CR",
-    bio: "Colm brings deep expertise in business strategy, operations, and commercial development. With a track record of building scalable systems and driving revenue growth, he leads Outpace's vision of integrated business development.",
+    bio: "Colm's background is in business strategy, operations, and commercial development. He's built and scaled systems that actually drive revenue — and he runs Outpace with the same operator's mindset: if it doesn't move the needle, it doesn't make the cut.",
     linkedin: "https://www.linkedin.com/in/colm-ring",
     gradient: "from-brand-cyan to-brand-teal",
   },
@@ -52,7 +52,7 @@ const team = [
     name: "Holly Purnell",
     role: "Co-Founder & CMO",
     initials: "HP",
-    bio: "Holly is the creative and strategic force behind Outpace's marketing engine. With expertise across digital marketing, brand building, content strategy, and campaign management, she ensures every client's story reaches the right audience.",
+    bio: "Holly runs Outpace's marketing engine — digital marketing, brand building, content strategy, and campaign execution. She's the reason clients don't just get a strategy deck, they get campaigns that actually reach the right people and convert.",
     linkedin: "https://www.linkedin.com/in/holly-purnell",
     gradient: "from-brand-emerald to-brand-cyan",
   },

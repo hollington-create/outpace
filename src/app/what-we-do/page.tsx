@@ -30,6 +30,24 @@ import {
   MousePointerClick,
   BrainCircuit,
   MessageSquare,
+  GraduationCap,
+  BookOpen,
+  ClipboardCheck,
+  Trophy,
+  Heart,
+  ThumbsUp,
+  ArrowUpRight,
+  RefreshCw,
+  Crosshair,
+  Map,
+  Tag,
+  Briefcase,
+  Handshake,
+  Network,
+  Gift,
+  UserPlus,
+  BadgeEuro,
+  Megaphone as MegaphoneIcon,
 } from "lucide-react";
 import ParticleField from "@/components/ParticleField";
 import GlowOrb from "@/components/GlowOrb";
@@ -74,10 +92,11 @@ const pillars: Pillar[] = [
     iconBg: "bg-cyan-500/10",
     iconColor: "text-cyan-400",
     features: [
-      { icon: Search, text: "Deep-dive business audit & USP documentation" },
-      { icon: Users, text: "Target market identification & segmentation" },
-      { icon: BarChart3, text: "Competitive landscape analysis" },
+      { icon: Search, text: "Full business audit — what makes you different, documented" },
+      { icon: Users, text: "Target market identification — who to go after and why" },
+      { icon: BarChart3, text: "Competitive mapping — who you're up against and how to win" },
       { icon: Target, text: "Growth opportunity roadmap with clear priorities" },
+      { icon: BadgeEuro, text: "Grant & funding navigation (Enterprise Ireland, LEO)" },
     ],
   },
   {
@@ -85,7 +104,7 @@ const pillars: Pillar[] = [
     number: "02",
     title: "Outbound Lead Generation",
     subtitle: "Fill your pipeline with qualified prospects",
-    desc: "We build and execute multi-channel outbound campaigns that put your offer in front of the right decision-makers. From scraped prospect lists to AI-powered calling, we handle the entire top-of-funnel.",
+    desc: "We get your offer in front of the right decision-makers — email, phone, LinkedIn, whatever it takes. From building your prospect lists to AI-powered calling at scale, we fill the top of your pipeline so your team can focus on closing.",
     gradient: "from-emerald-400 to-teal-500",
     glowColor: "rgba(52, 211, 153, 0.15)",
     iconBg: "bg-emerald-500/10",
@@ -129,7 +148,7 @@ const pillars: Pillar[] = [
     features: [
       { icon: Settings, text: "CRM implementation & customisation" },
       { icon: HeadphonesIcon, text: "Customer service consulting & training" },
-      { icon: Workflow, text: "Process mapping & efficiency improvements" },
+      { icon: Workflow, text: "Process mapping — cut the bottlenecks slowing you down" },
       { icon: BarChart3, text: "Reporting dashboards & KPI tracking" },
     ],
     logos: SYSTEMS_LOGOS,
@@ -138,7 +157,7 @@ const pillars: Pillar[] = [
     id: "content",
     number: "05",
     title: "Content & Video",
-    subtitle: "Tell your story with impact",
+    subtitle: "Build trust before the first meeting",
     desc: "People buy from companies they trust. We produce professional video content — management interviews, client testimonials, facility tours — and build a content strategy that positions you as the authority in your space.",
     gradient: "from-rose-400 to-pink-500",
     glowColor: "rgba(251, 113, 133, 0.15)",
@@ -148,7 +167,8 @@ const pillars: Pillar[] = [
       { icon: Mic, text: "Management interview series" },
       { icon: Video, text: "Client testimonial videos" },
       { icon: Camera, text: "Facility tours & brand films" },
-      { icon: Share2, text: "Brand storytelling & content strategy" },
+      { icon: Share2, text: "Content strategy & thought leadership" },
+      { icon: UserPlus, text: "Employer branding & recruitment content" },
     ],
   },
   {
@@ -168,6 +188,74 @@ const pillars: Pillar[] = [
       { icon: MousePointerClick, text: "Personalised prospect landing pages" },
     ],
     logos: AI_LOGOS,
+  },
+  {
+    id: "sales",
+    number: "07",
+    title: "Sales Enablement & Training",
+    subtitle: "Close more of what you generate",
+    desc: "No point filling a pipeline if your team can't close it. We work with your salespeople — not instead of them — to sharpen their pitch, tighten their process, and give them the tools to convert more of the opportunities we generate.",
+    gradient: "from-indigo-400 to-blue-500",
+    glowColor: "rgba(129, 140, 248, 0.15)",
+    iconBg: "bg-indigo-500/10",
+    iconColor: "text-indigo-400",
+    features: [
+      { icon: BookOpen, text: "Sales playbook creation & objection handling" },
+      { icon: GraduationCap, text: "Discovery call coaching & pitch training" },
+      { icon: Workflow, text: "Sales process mapping & optimisation" },
+      { icon: Trophy, text: "Win/loss analysis & pipeline reviews" },
+    ],
+  },
+  {
+    id: "retention",
+    number: "08",
+    title: "Customer Retention & Growth",
+    subtitle: "Your easiest revenue is already in your database",
+    desc: "Most businesses obsess over new logos while their best clients quietly drift away. We build the systems that keep them — health scoring so you spot churn before it happens, structured check-ins that surface new opportunities, and upsell playbooks that grow accounts you've already won.",
+    gradient: "from-teal-400 to-cyan-500",
+    glowColor: "rgba(45, 212, 191, 0.15)",
+    iconBg: "bg-teal-500/10",
+    iconColor: "text-teal-400",
+    features: [
+      { icon: Heart, text: "Churn analysis & client health scoring" },
+      { icon: ThumbsUp, text: "NPS / CSAT programme setup & tracking" },
+      { icon: ArrowUpRight, text: "Upsell & cross-sell strategy" },
+      { icon: RefreshCw, text: "Quarterly business reviews that deepen relationships" },
+    ],
+  },
+  {
+    id: "positioning",
+    number: "09",
+    title: "Brand Positioning & GTM Strategy",
+    subtitle: "Get clear before you spend a cent",
+    desc: "If your positioning is vague, every campaign you run is a coin flip. We help you get crystal clear on who you're for, why they should care, and how to take that message to market — so every pound you spend actually lands.",
+    gradient: "from-sky-400 to-blue-500",
+    glowColor: "rgba(56, 189, 248, 0.15)",
+    iconBg: "bg-sky-500/10",
+    iconColor: "text-sky-400",
+    features: [
+      { icon: Crosshair, text: "Messaging hierarchy & value proposition workshops" },
+      { icon: Map, text: "Go-to-market strategy for new products & markets" },
+      { icon: Users, text: "ICP refinement & buyer persona development" },
+      { icon: Tag, text: "Pricing & packaging strategy reviews" },
+    ],
+  },
+  {
+    id: "partnerships",
+    number: "10",
+    title: "Partnerships & Referral Programmes",
+    subtitle: "Turn your network into a growth engine",
+    desc: "Your best clients know other businesses just like them — but most referrals happen by accident. We design structured referral programmes, identify strategic partners, and build co-marketing campaigns that turn word-of-mouth into a predictable, repeatable source of warm introductions.",
+    gradient: "from-lime-400 to-emerald-500",
+    glowColor: "rgba(163, 230, 53, 0.15)",
+    iconBg: "bg-lime-500/10",
+    iconColor: "text-lime-400",
+    features: [
+      { icon: Handshake, text: "Strategic partner identification & outreach" },
+      { icon: Network, text: "Referral programme design & tracking" },
+      { icon: Gift, text: "Co-marketing campaigns with partners" },
+      { icon: Briefcase, text: "Partner enablement — collateral, training & incentives" },
+    ],
   },
 ];
 
@@ -304,7 +392,7 @@ function ServiceNav() {
   return (
     <section className="relative py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {pillars.map((p, i) => (
             <motion.a
               key={p.id}
@@ -356,8 +444,8 @@ function StatsBar() {
   const inView = useInView(ref, { once: true });
 
   const stats = [
-    { value: "6", label: "Service Pillars" },
-    { value: "24+", label: "Individual Services" },
+    { value: "10", label: "Service Pillars" },
+    { value: "40+", label: "Individual Services" },
     { value: "1", label: "Integrated Partner" },
     { value: "100%", label: "Client Retention" },
   ];
@@ -433,9 +521,9 @@ export default function WhatWeDoPage() {
             />
 
             <p className="mt-8 text-xl text-slate-400 max-w-2xl leading-relaxed">
-              Six integrated service pillars covering the entire business
-              development lifecycle — from understanding your market to filling
-              your pipeline to closing deals.
+              Ten integrated service pillars covering the entire business
+              development lifecycle — from positioning and strategy through pipeline
+              generation, sales enablement, and client retention.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">

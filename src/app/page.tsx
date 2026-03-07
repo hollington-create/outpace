@@ -28,6 +28,8 @@ import {
   TrendingUp,
   X,
   Check,
+  GraduationCap,
+  Handshake,
 } from "lucide-react";
 
 const services = [
@@ -39,17 +41,27 @@ const services = [
   {
     icon: Target,
     title: "Acquisition & Growth",
-    desc: "B2B email sequences, AI-powered outbound calling, scraped prospect lists, and meeting booking that fills your pipeline.",
+    desc: "B2B email sequences, AI-powered outbound calling, and prospect list building — so your calendar fills with qualified meetings, not cold leads.",
   },
   {
     icon: Users,
-    title: "Client Relationships",
-    desc: "CRM implementation, customer service consulting, and process efficiency to turn one-time buyers into long-term clients.",
+    title: "Client Relationships & Retention",
+    desc: "CRM implementation, retention programmes, and upsell strategies that grow revenue from clients you've already won — instead of letting them quietly drift away.",
   },
   {
     icon: LineChart,
     title: "Strategy & Advisory",
-    desc: "Consultative business analysis, market research, USP documentation, and target market identification to sharpen your edge.",
+    desc: "Business analysis, brand positioning, go-to-market strategy, and market identification — so every decision is backed by data, not gut feel.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Sales Enablement",
+    desc: "Sales playbooks, team training, and process optimisation so your team converts more of the pipeline we build.",
+  },
+  {
+    icon: Handshake,
+    title: "Partnerships & Growth Channels",
+    desc: "Referral programmes, strategic partnerships, and co-marketing campaigns that turn your network into a predictable growth channel.",
   },
 ];
 
@@ -66,8 +78,8 @@ const usps = [
   },
   {
     icon: Cpu,
-    title: "Integrated Tech Stack",
-    desc: "One unified system instead of five disconnected tools. CRM, outbound, analytics, and content working together seamlessly.",
+    title: "One Unified System",
+    desc: "No more five disconnected tools that don't talk to each other. CRM, outbound, analytics, and content — all working together under one roof.",
   },
   {
     icon: Globe,
@@ -104,7 +116,7 @@ const process = [
     step: "04",
     icon: TrendingUp,
     title: "Drive",
-    desc: "We optimise, iterate, and scale what works. Monthly reviews, transparent reporting, and continuous improvement.",
+    desc: "We optimise, iterate, and scale what works. Monthly reviews, transparent reporting — what's winning gets doubled down, what's not gets cut.",
   },
 ];
 
@@ -156,7 +168,7 @@ export default function HomePage() {
 
           <AnimatedSection delay={0.3}>
             <p className="mt-8 text-lg sm:text-xl text-brand-muted max-w-2xl mx-auto leading-relaxed">
-              Strategy, lead generation, systems, content, and digital presence — all under one roof.
+              Strategy, lead generation, sales enablement, content, retention, and digital presence — all under one roof.
               One partner. One pipeline. Real revenue.
             </p>
           </AnimatedSection>
@@ -282,7 +294,7 @@ export default function HomePage() {
                 Our Approach
               </p>
               <AccentHeading
-                text="Four pillars of **growth.**"
+                text="Ten pillars of **growth.**"
                 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-brand-text"
               />
               <p className="mt-6 text-lg text-brand-muted leading-relaxed">
@@ -292,7 +304,7 @@ export default function HomePage() {
             </div>
           </AnimatedSection>
 
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((s, i) => (
               <AnimatedSection key={s.title} delay={i * 0.1}>
                 <TiltCard className="relative h-full">
@@ -318,7 +330,7 @@ export default function HomePage() {
                 href="/what-we-do"
                 className="text-brand-cyan-bright font-semibold inline-flex items-center gap-2 hover:gap-3 transition-all group"
               >
-                See all 24+ services
+                See all 40+ services
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
