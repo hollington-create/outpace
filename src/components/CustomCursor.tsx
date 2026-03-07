@@ -20,20 +20,30 @@ const TRAIL_COLORS = [
 
 export default function CustomCursor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [isTouch, setIsTouch] = useState(true); // assume touch until checked
   const mousePos = useRef({ x: -100, y: -100 });
   const trail = useRef<{ x: number; y: number }[]>([]);
   const hovering = useRef(false);
   const animFrame = useRef<number>(0);
 
+  // Detect touch device on mount
   useEffect(() => {
-    const isTouch =
+    const touch =
       window.matchMedia("(pointer: coarse)").matches ||
       "ontouchstart" in window;
+    setIsTouch(touch);
+  }, []);
+
+  // Start animation once canvas is rendered (isTouch = false)
+  useEffect(() => {
     if (isTouch) return;
 
-    setVisible(true);
     document.documentElement.classList.add("cursor-active");
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     const onMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
@@ -65,12 +75,6 @@ export default function CustomCursor() {
       interactives = addListeners();
     });
     observer.observe(document.body, { childList: true, subtree: true });
-
-    // Animation loop
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -139,9 +143,9 @@ export default function CustomCursor() {
       });
       observer.disconnect();
     };
-  }, []);
+  }, [isTouch]);
 
-  if (!visible) return null;
+  if (isTouch) return null;
 
   return (
     <canvas
