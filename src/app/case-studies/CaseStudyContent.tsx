@@ -137,12 +137,15 @@ export default function CaseStudyContent() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24 pt-40">
           <AnimatedSection>
             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-black/70 border border-[#D4A014]/40 backdrop-blur-md mb-8">
-              <Image
-                src="/images/cube-logo.png"
-                alt="Cube Printing"
-                width={44}
-                height={44}
-              />
+              <div className="w-11 h-11 rounded-lg overflow-hidden bg-[#D4A014] flex-shrink-0">
+                <Image
+                  src="/images/cube-icon.png"
+                  alt="Cube Printing"
+                  width={44}
+                  height={44}
+                  className="object-cover w-full h-full"
+                />
+              </div>
               <div className="border-l border-[#D4A014]/30 pl-3">
                 <span className="text-white font-extrabold text-xl tracking-wider">CUBE</span>
                 <p className="text-[#D4A014] text-[9px] font-semibold tracking-[0.25em] uppercase leading-tight">Design &middot; Print &middot; Package</p>
@@ -215,7 +218,7 @@ export default function CaseStudyContent() {
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
                 <div>
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-2xl overflow-hidden">
+                    <div className="w-14 h-14 rounded-2xl overflow-hidden bg-[#D4A014]">
                       <Image
                         src="/images/cube-icon.png"
                         alt="Cube Printing logo"

@@ -13,8 +13,7 @@ const footerLinks = [
       { label: "What We Do", href: "/what-we-do" },
       { label: "Who We Are", href: "/who-we-are" },
       { label: "How We Do It", href: "/how-we-do-it" },
-      { label: "Case Studies", href: "/case-studies" },
-      { label: "Contact", href: "/contact" },
+      { label: "Case Studies", href: "/case-studies/cube" },
     ],
   },
   {
