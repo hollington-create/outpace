@@ -139,7 +139,7 @@ export default function CaseStudyContent() {
             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-black/70 border border-[#D4A014]/40 backdrop-blur-md mb-8">
               <div className="w-11 h-11 rounded-lg overflow-hidden bg-[#D4A014] flex-shrink-0">
                 <Image
-                  src="/images/cube-icon.png"
+                  src="/images/cube-icon-gold.jpg"
                   alt="Cube Printing"
                   width={44}
                   height={44}
@@ -220,7 +220,7 @@ export default function CaseStudyContent() {
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-14 h-14 rounded-2xl overflow-hidden bg-[#D4A014]">
                       <Image
-                        src="/images/cube-icon.png"
+                        src="/images/cube-icon-gold.jpg"
                         alt="Cube Printing logo"
                         width={56}
                         height={56}

@@ -19,7 +19,7 @@ const cases = [
     tagline: "From local printer to med-tech powerhouse",
     description:
       "How we helped a Limerick-based printing company break into the med-tech market with outbound, video, web, social, and AI.",
-    icon: "/images/cube-icon.png",
+    icon: "/images/cube-icon-gold.jpg",
     tags: ["MedTech", "ISO 9001", "Limerick"],
     tagIcons: [Factory, Shield, MapPin],
   },
