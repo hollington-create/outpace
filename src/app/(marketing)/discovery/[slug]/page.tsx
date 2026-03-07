@@ -32,31 +32,28 @@ export default function PersonalisedDiscoveryPage({
   return (
     <div className="min-h-screen pt-8 pb-20">
       <ScrollToTop />
+      {/* ── Full-width hero image ── */}
+      {config.heroImage && (
+        <div className="relative w-full h-56 md:h-72 lg:h-96 overflow-hidden group">
+          <Image
+            src={config.heroImage}
+            alt={config.companyName || "Company"}
+            fill
+            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-[#0a0f1a]/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a]/40 via-transparent to-[#0a0f1a]/40" />
+        </div>
+      )}
+
       {/* ── Hero ── */}
       <section className="pt-6 pb-4 px-6 relative overflow-hidden" tabIndex={-1}>
         <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[-30%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto relative z-10">
-          {/* Hero image banner */}
-          {config.heroImage && (
-            <div className="relative w-full h-48 md:h-64 lg:h-72 rounded-2xl overflow-hidden mb-6 group">
-              <Image
-                src={config.heroImage}
-                alt={config.companyName || "Company"}
-                fill
-                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 896px"
-                priority
-              />
-              {/* Gradient overlays for cinematic look */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-[#0a0f1a]/40 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a]/60 via-transparent to-[#0a0f1a]/30" />
-              {/* Subtle border glow */}
-              <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/[0.08]" />
-            </div>
-          )}
-
           {/* Pill + Company card row */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>

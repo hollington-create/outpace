@@ -22,29 +22,28 @@ export default function AnimatedLogo({ className = "" }: AnimatedLogoProps) {
 
   const getLetterStyle = useCallback(
     (index: number) => {
-      if (hoveredIndex === null) return {};
+      if (hoveredIndex === null) return { letterSpacing: "0px" };
 
       const distance = Math.abs(index - hoveredIndex);
 
       if (distance === 0) {
         return {
-          transform: "translateY(-4px) scale(1.1)",
-          filter: "brightness(1.3)",
+          transform: "scaleX(1.2) scaleY(1.15)",
+          letterSpacing: "3px",
         };
       }
       if (distance === 1) {
         return {
-          transform: "translateY(-2px) scale(1.05)",
-          filter: "brightness(1.15)",
+          transform: "scaleX(1.1) scaleY(1.05)",
+          letterSpacing: "2px",
         };
       }
       if (distance === 2) {
         return {
-          transform: "translateY(-1px)",
-          filter: "brightness(1.05)",
+          letterSpacing: "1px",
         };
       }
-      return {};
+      return { letterSpacing: "0px" };
     },
     [hoveredIndex]
   );
