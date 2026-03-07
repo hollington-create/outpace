@@ -16,23 +16,29 @@ const footerLinks = [
       { label: "Case Studies", href: "/case-studies/cube" },
     ],
   },
-  {
-    title: "Services",
-    links: [
-      { label: "Business Analysis", href: "/what-we-do#analysis" },
-      { label: "Lead Generation", href: "/what-we-do#leads" },
-      { label: "Digital Presence", href: "/what-we-do#digital" },
-      { label: "Systems & Ops", href: "/what-we-do#systems" },
-      { label: "Content & Video", href: "/what-we-do#content" },
-    ],
-  },
+];
+
+const serviceLinksLeft = [
+  { label: "Business Analysis", href: "/services/business-analysis" },
+  { label: "Lead Generation", href: "/services/lead-generation" },
+  { label: "Digital Presence", href: "/services/digital-presence" },
+  { label: "Systems & Operations", href: "/services/systems-operations" },
+  { label: "Content & Video", href: "/services/content-video" },
+];
+
+const serviceLinksRight = [
+  { label: "AI Growth Tools", href: "/services/ai-growth-tools" },
+  { label: "Sales Enablement", href: "/services/sales-enablement" },
+  { label: "Customer Retention", href: "/services/customer-retention" },
+  { label: "Brand Positioning", href: "/services/brand-positioning" },
+  { label: "Partnerships", href: "/services/partnerships" },
 ];
 
 export default function Footer() {
   return (
     <footer className="bg-brand-darkest border-t border-brand-border/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
           <div className="md:col-span-2">
             <Link href="/" className="text-3xl tracking-tight text-shimmer inline-block">
               <span className="font-extrabold">OUT</span><span className="font-light">PACE</span><span className="text-brand-cyan-bright font-extrabold">.</span>
@@ -42,7 +48,7 @@ export default function Footer() {
               strategically, not just spend more on marketing.
             </p>
             <div className="mt-6 flex flex-col gap-2 text-sm text-brand-muted">
-              <span>Limerick, Ireland</span>
+              <span>Unit B3, Eastway Business Park, Ballysimon, Co. Limerick V94 AX99, Ireland</span>
               <a
                 href="mailto:hello@outpace.ie"
                 className="hover:text-brand-cyan-bright transition-colors"
@@ -81,6 +87,51 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+
+          {/* Services — split across two columns */}
+          <div>
+            <h3 className="text-sm font-semibold text-brand-text uppercase tracking-wider">
+              Services
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {serviceLinksLeft.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-brand-muted hover:text-brand-cyan-bright transition-colors inline-flex items-center gap-1 group"
+                  >
+                    {link.label}
+                    <ArrowUpRight
+                      size={12}
+                      className="opacity-0 -translate-y-0.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-brand-text uppercase tracking-wider md:invisible">
+              Services
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {serviceLinksRight.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-brand-muted hover:text-brand-cyan-bright transition-colors inline-flex items-center gap-1 group"
+                  >
+                    {link.label}
+                    <ArrowUpRight
+                      size={12}
+                      className="opacity-0 -translate-y-0.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-brand-border/50">

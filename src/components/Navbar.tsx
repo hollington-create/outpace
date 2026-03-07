@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
@@ -13,7 +13,7 @@ const links = [
 ];
 
 const caseStudies = [
-  { href: "/case-studies/cube", label: "Cube Printing" },
+  { href: "/case-studies/cube", label: "CUBE" },
 ];
 
 export default function Navbar() {
@@ -125,8 +125,16 @@ export default function Navbar() {
             </div>
 
             <Link
+              href="/portal"
+              className={`ml-3 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-brand-muted hover:text-brand-cyan-bright hover:bg-brand-cyan-bright/10 inline-flex items-center gap-1.5`}
+            >
+              <LogIn size={14} />
+              Login
+            </Link>
+
+            <Link
               href="/contact"
-              className={`ml-4 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-lg shadow-brand-cyan/25 ${
+              className={`ml-2 bg-gradient-to-r from-brand-cyan to-brand-teal hover:from-brand-cyan-bright hover:to-brand-cyan text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-lg shadow-brand-cyan/25 ${
                 scrolled ? "px-4 py-2" : "px-5 py-2.5"
               }`}
             >
@@ -186,6 +194,15 @@ export default function Navbar() {
                   {cs.label}
                 </Link>
               ))}
+
+              <Link
+                href="/portal"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-brand-muted hover:text-brand-cyan-bright hover:bg-brand-cyan-bright/10 transition-all"
+              >
+                <LogIn size={14} />
+                Login
+              </Link>
 
               <Link
                 href="/contact"

@@ -6,7 +6,6 @@ import AccentHeading from "@/components/AccentHeading";
 import HeroSection from "@/components/HeroSection";
 import GlowOrb from "@/components/GlowOrb";
 import TiltCard from "@/components/TiltCard";
-import CountUp from "@/components/CountUp";
 import MagneticButton from "@/components/MagneticButton";
 import Marquee from "@/components/Marquee";
 import LogoCloud from "@/components/LogoCloud";
@@ -118,13 +117,6 @@ const process = [
     title: "Drive",
     desc: "We optimise, iterate, and scale what works. Monthly reviews, transparent reporting — what's winning gets doubled down, what's not gets cut.",
   },
-];
-
-const stats = [
-  { value: 900, suffix: "+", label: "Contacts Reached" },
-  { value: 115, suffix: "", label: "Companies Targeted" },
-  { value: 3, suffix: "", label: "Video Series Produced" },
-  { value: 100, suffix: "%", label: "Client Retention" },
 ];
 
 const donts = [
@@ -284,10 +276,10 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ WHAT SETS US APART ═══════ */}
-      <section className="py-24 sm:py-32 bg-brand-dark">
+      <section className="py-24 sm:py-32 bg-brand-dark overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <div className="text-center max-w-3xl mx-auto">
+            <div className="text-center max-w-3xl mx-auto mb-20">
               <p className="text-brand-cyan-bright font-semibold text-sm tracking-widest uppercase mb-4">
                 What Sets Us Apart
               </p>
@@ -302,24 +294,52 @@ export default function HomePage() {
             </div>
           </AnimatedSection>
 
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {usps.map((u, i) => (
-              <AnimatedSection key={u.title} delay={i * 0.08}>
-                <TiltCard className="relative h-full">
-                  <div className="p-8 rounded-2xl glass glass-hover card-shine h-full">
-                    <div className="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center mb-4">
-                      <u.icon className="text-brand-cyan-bright" size={20} />
+          {/* Staggered alternating layout */}
+          <div className="relative">
+            {/* Vertical glowing line */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-brand-cyan/30 to-transparent hidden lg:block" />
+
+            <div className="space-y-12 lg:space-y-0">
+              {usps.map((u, i) => {
+                const isLeft = i % 2 === 0;
+                return (
+                  <AnimatedSection key={u.title} delay={i * 0.1}>
+                    <div className={`relative lg:flex items-center lg:min-h-[140px] ${isLeft ? "" : "lg:flex-row-reverse"}`}>
+                      {/* Content side */}
+                      <div className={`lg:w-1/2 ${isLeft ? "lg:pr-16 lg:text-right" : "lg:pl-16"}`}>
+                        <div className={`flex items-center gap-4 ${isLeft ? "lg:flex-row-reverse" : ""}`}>
+                          <div className="relative shrink-0">
+                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-cyan/20 to-brand-teal/10 flex items-center justify-center border border-brand-cyan/20 group-hover:border-brand-cyan/40 transition-colors">
+                              <u.icon className="text-brand-cyan-bright" size={22} />
+                            </div>
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold text-brand-text">
+                              {u.title}<span className="text-brand-cyan-bright">.</span>
+                            </h3>
+                            <p className="mt-1 text-brand-muted text-sm leading-relaxed max-w-md">
+                              {u.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Center dot on the line */}
+                      <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-darkest border-2 border-brand-cyan/50 z-10">
+                        <div className="w-2 h-2 rounded-full bg-brand-cyan-bright m-auto" />
+                      </div>
+
+                      {/* Number side */}
+                      <div className={`hidden lg:flex lg:w-1/2 ${isLeft ? "lg:pl-16" : "lg:pr-16 justify-end"}`}>
+                        <span className="text-7xl font-extrabold font-display text-brand-cyan/[0.07] select-none">
+                          0{i + 1}
+                        </span>
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-brand-text">
-                      {u.title}<span className="text-brand-cyan-bright">.</span>
-                    </h3>
-                    <p className="mt-2 text-brand-muted text-sm leading-relaxed">
-                      {u.desc}
-                    </p>
-                  </div>
-                </TiltCard>
-              </AnimatedSection>
-            ))}
+                  </AnimatedSection>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -375,26 +395,6 @@ export default function HomePage() {
                 See our full process
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* ═══════ STATS ═══════ */}
-      <section className="py-24 sm:py-32 bg-brand-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((s) => (
-                <div key={s.label} className="text-center group">
-                  <p className="text-4xl sm:text-5xl font-extrabold font-display text-brand-cyan-bright">
-                    <CountUp end={s.value} suffix={s.suffix} />
-                  </p>
-                  <p className="mt-2 text-sm text-brand-muted group-hover:text-brand-text transition-colors">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
             </div>
           </AnimatedSection>
         </div>
