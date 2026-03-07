@@ -34,12 +34,13 @@ export default function BrowserMockup({
         </div>
 
         {/* Real Screenshot */}
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="relative overflow-hidden">
           <Image
             src={screenshot}
             alt={`${url} website screenshot`}
-            fill
-            className="object-cover object-top"
+            width={1440}
+            height={900}
+            className="w-full h-auto block"
             sizes="(max-width: 768px) 100vw, 1200px"
           />
           {/* Shimmer sweep */}

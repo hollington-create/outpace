@@ -30,7 +30,7 @@ const honeycombRows: HexCell[][] = [
   // Row 1: 3 cells (offset right)
   [
     { type: "image", src: "/images/facility-f7.jpg", alt: "Quality control process" },
-    { type: "logo", src: "/images/cube-logo.png", alt: "Cube logo" },
+    { type: "logo", src: "/images/cube-icon.png", alt: "Cube logo" },
     { type: "image", src: "/images/hex-h7.jpg", alt: "Production inspection" },
   ],
   // Row 2: 4 cells
@@ -103,11 +103,11 @@ function HexCell({
         className="absolute inset-0"
         style={{ clipPath: hexClip }}
       >
-        <div className="absolute inset-0 bg-white/90" />
+        <div className="absolute inset-0 bg-white" />
 
         {/* Inner hex (inset for border effect) */}
         <div
-          className="absolute inset-[3px] overflow-hidden"
+          className="absolute inset-[5px] overflow-hidden"
           style={{ clipPath: hexClip }}
         >
           {cell.type === "image" && (

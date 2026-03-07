@@ -22,12 +22,12 @@ export default function PhoneMockup({
         {/* Screen */}
         <div className="rounded-[2rem] overflow-hidden aspect-[9/19.5]">
           {screenshot ? (
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full bg-[#111]">
               <Image
                 src={screenshot}
                 alt="Mobile website screenshot"
                 fill
-                className="object-cover object-top"
+                className="object-contain object-top"
                 sizes="260px"
               />
             </div>
