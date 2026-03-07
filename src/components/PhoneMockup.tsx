@@ -20,7 +20,7 @@ export default function PhoneMockup({
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90px] h-[22px] bg-[#111] rounded-b-2xl z-10" />
 
         {/* Screen */}
-        <div className="rounded-[2rem] overflow-hidden aspect-[9/19.5]">
+        <div className="rounded-[2rem] overflow-hidden aspect-[9/16]">
           {screenshot ? (
             <div className="relative w-full h-full">
               <Image
