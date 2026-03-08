@@ -5,38 +5,53 @@
       <stop offset="50%" stop-color="#06B6D4"/>
       <stop offset="100%" stop-color="#0891B2"/>
     </linearGradient>
+    <!-- Wide diagonal slash mask for speed/movement -->
+    <mask id="slash">
+      <rect width="512" height="512" fill="white"/>
+      <polygon points="175,460 220,460 340,60 295,60" fill="black"/>
+    </mask>
   </defs>
   <rect width="512" height="512" rx="96" fill="#0a0f1a"/>
-  <!-- Bold italic O -->
-  <path d="
-    M105 256
-    C105 175 145 120 210 120
-    C275 120 310 175 310 256
-    C310 340 270 392 205 392
-    C140 392 105 340 105 256
-    Z
-    M175 256
-    C175 310 185 348 210 348
-    C235 348 242 310 242 256
-    C242 205 232 165 210 165
-    C185 165 175 205 175 256
-    Z
-  " fill="url(#g)" transform="skewX(-10) translate(-20,0)"/>
-  <!-- Bold italic P -->
-  <path d="
-    M260 120
-    L340 120
-    C405 120 440 155 440 200
-    C440 250 405 280 340 280
-    L310 280
-    L290 392
-    L222 392
-    Z
-    M300 170
-    L285 235
-    L330 235
-    C365 235 375 220 375 200
-    C375 182 365 170 340 170
-    Z
-  " fill="url(#g)" transform="skewX(-10) translate(-20,0)"/>
+  <g transform="skewX(-10) translate(30,0)">
+    <!-- O with diagonal speed slash -->
+    <g mask="url(#slash)">
+      <path d="
+        M42 295
+        C42 180 100 110 190 110
+        C280 110 332 180 332 295
+        C332 405 280 465 190 465
+        C100 465 42 405 42 295
+        Z
+      " fill="url(#g)"/>
+      <!-- O inner cutout — italic oval -->
+      <path d="
+        M128 295
+        C128 228 152 180 192 180
+        C232 180 252 228 252 295
+        C252 358 232 400 192 400
+        C152 400 128 358 128 295
+        Z
+      " fill="#0a0f1a"/>
+    </g>
+    <!-- P — tight overlap with O, bold stem + bowl -->
+    <path d="
+      M270 110
+      L375 110
+      C442 110 478 152 478 210
+      C478 272 442 308 375 308
+      L330 308
+      L308 465
+      L242 465
+      Z
+    " fill="url(#g)"/>
+    <!-- P bowl cutout -->
+    <path d="
+      M308 172
+      L292 250
+      L358 250
+      C395 250 410 235 410 212
+      C410 188 395 172 368 172
+      Z
+    " fill="#0a0f1a"/>
+  </g>
 </svg>
