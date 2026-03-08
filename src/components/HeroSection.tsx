@@ -213,7 +213,7 @@ export default function HeroSection() {
         <span
           className="text-[20vw] sm:text-[18vw] lg:text-[16vw] font-black tracking-tighter select-none whitespace-nowrap"
           style={{
-            background: "linear-gradient(180deg, rgba(34,211,238,0.9) 0%, rgba(52,211,153,0.6) 100%)",
+            backgroundImage: "linear-gradient(180deg, rgba(34,211,238,0.9) 0%, rgba(52,211,153,0.6) 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",

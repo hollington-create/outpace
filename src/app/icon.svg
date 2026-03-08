@@ -5,53 +5,33 @@
       <stop offset="50%" stop-color="#06B6D4"/>
       <stop offset="100%" stop-color="#0891B2"/>
     </linearGradient>
-    <!-- Wide diagonal slash mask for speed/movement -->
-    <mask id="slash">
-      <rect width="512" height="512" fill="white"/>
-      <polygon points="175,460 220,460 340,60 295,60" fill="black"/>
-    </mask>
   </defs>
   <rect width="512" height="512" rx="96" fill="#0a0f1a"/>
-  <g transform="skewX(-10) translate(30,0)">
-    <!-- O with diagonal speed slash -->
-    <g mask="url(#slash)">
-      <path d="
-        M42 295
-        C42 180 100 110 190 110
-        C280 110 332 180 332 295
-        C332 405 280 465 190 465
-        C100 465 42 405 42 295
-        Z
-      " fill="url(#g)"/>
-      <!-- O inner cutout — italic oval -->
-      <path d="
-        M128 295
-        C128 228 152 180 192 180
-        C232 180 252 228 252 295
-        C252 358 232 400 192 400
-        C152 400 128 358 128 295
-        Z
-      " fill="#0a0f1a"/>
-    </g>
-    <!-- P — tight overlap with O, bold stem + bowl -->
+  <!-- Bold italic OP at ~15deg slant via skewX -->
+  <g transform="translate(256, 270) skewX(-15) translate(-240, -260)">
+    <!-- O — wide bold shape, bottom extends left for speed feel -->
     <path d="
-      M270 110
-      L375 110
-      C442 110 478 152 478 210
-      C478 272 442 308 375 308
-      L330 308
-      L308 465
-      L242 465
+      M40 300
+      C40 200 95 130 185 130
+      C270 130 318 200 318 300
+      C318 390 270 455 185 455
+      C95 455 40 390 40 300
       Z
     " fill="url(#g)"/>
-    <!-- P bowl cutout -->
+    <!-- O counter — italic oval -->
+    <ellipse cx="183" cy="302" rx="55" ry="62" fill="#0a0f1a"/>
+    <!-- P — bold, overlapping with O on the right -->
     <path d="
-      M308 172
-      L292 250
-      L358 250
-      C395 250 410 235 410 212
-      C410 188 395 172 368 172
+      M250 130
+      L370 130
+      C440 130 475 170 475 230
+      C475 295 440 330 370 330
+      L315 330
+      L295 455
+      L235 455
       Z
-    " fill="#0a0f1a"/>
+    " fill="url(#g)"/>
+    <!-- P bowl counter — italic oval -->
+    <ellipse cx="375" cy="228" rx="38" ry="40" fill="#0a0f1a"/>
   </g>
 </svg>
