@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import DiscoveryChat from "@/components/DiscoveryChat";
 import ScrollToTop from "@/components/ScrollToTop";
+import ScrollChevron from "@/components/ScrollChevron";
 import { PAGE_CONFIGS } from "@/lib/discovery-configs";
 
 export async function generateStaticParams() {
@@ -113,8 +114,66 @@ export default function PersonalisedDiscoveryPage({
         </div>
       </section>
 
+      {/* ── Scroll hint ── */}
+      <ScrollChevron />
+
+      {/* ── How It Works ── */}
+      <section className="px-6 pt-10 pb-2">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-slate-400 text-sm text-center mb-8 animate-fade-up-in">
+            A free, confidential growth consultation for{" "}
+            <span className="text-white font-medium">{config.companyName}</span>{" "}
+            — voice or text, takes around 10 minutes.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 relative">
+            {/* Connecting line (desktop only) */}
+            <div className="hidden md:block absolute top-8 left-[20%] right-[20%] h-px bg-gradient-to-r from-cyan-500/20 via-cyan-500/40 to-cyan-500/20" />
+
+            {[
+              {
+                step: "1",
+                title: "Have a conversation",
+                desc: "Tell us about your business, goals, and challenges",
+              },
+              {
+                step: "2",
+                title: "We identify opportunities",
+                desc: "Our AI uncovers growth levers specific to your market",
+              },
+              {
+                step: "3",
+                title: "Get your strategy",
+                desc: "Receive a tailored proposal with clear next steps",
+              },
+            ].map((item) => (
+              <div
+                key={item.step}
+                className={`flex flex-col items-center text-center relative z-10 animate-fade-up-in stagger-${item.step}`}
+              >
+                <div className={`w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mb-3 step-pulse-${item.step}`}>
+                  <span className="text-cyan-400 text-sm font-bold">{item.step}</span>
+                </div>
+                <p className="text-white font-semibold text-sm mb-1">{item.title}</p>
+                <p className="text-slate-500 text-xs leading-relaxed max-w-[200px]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Start here indicator ── */}
+      <div className="flex flex-col items-center pt-6 pb-2 animate-fade-up-in stagger-3">
+        <span className="text-cyan-400/50 text-[10px] font-medium uppercase tracking-[0.2em] mb-1">
+          Start here
+        </span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-cyan-400/40 animate-bounce-down">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+
       {/* ── Chat Widget ── */}
-      <section className="px-6 pt-4 pb-12">
+      <section className="px-6 pt-2 pb-12">
         <div className="max-w-3xl mx-auto">
           <DiscoveryChat slug={config.slug} />
         </div>

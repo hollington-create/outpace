@@ -375,7 +375,7 @@ export default function DiscoveryChat({ slug }: DiscoveryChatProps) {
               setStarted(true);
               setVoiceMode(true);
             }}
-            className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/25 flex items-center gap-2"
+            className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/25 flex items-center gap-2 animate-ring-shake hover:animate-none"
           >
             <Phone className="w-4 h-4" />
             Start voice consultation
