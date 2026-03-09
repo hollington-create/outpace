@@ -68,7 +68,7 @@ export const PAGE_CONFIGS: Record<string, DiscoveryPageConfig> = {
   },
   rayn: {
     slug: "rayn",
-    heroTitle: "Growth consultation for RAYN Safety & Security",
+    heroTitle: "Growth consultation for RAYN",
     heroSubtitle:
       "Ireland's leading independent security and safety provider deserves a growth strategy to match. Let's identify your biggest opportunities.",
     companyLogo: "https://rayn.ie/wp-content/uploads/2025/06/RAYN_Logo_Colour.svg",
