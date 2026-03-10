@@ -56,7 +56,7 @@ export default function PersonalisedDiscoveryPage({
       )}
 
       {/* ── Hero ── */}
-      <section className="pt-6 pb-8 px-6 relative overflow-hidden" tabIndex={-1}>
+      <section className="pt-6 pb-2 px-6 relative overflow-hidden" tabIndex={-1}>
         <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[-30%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -116,7 +116,7 @@ export default function PersonalisedDiscoveryPage({
       <ScrollChevron />
 
       {/* ── How It Works ── */}
-      <section className="px-6 pt-10 pb-2">
+      <section className="px-6 pt-4 pb-2">
         <div className="max-w-3xl mx-auto">
           <p className="text-slate-400 text-base md:text-lg text-center mb-8 animate-fade-up-in">
             A free, confidential growth consultation for{" "}

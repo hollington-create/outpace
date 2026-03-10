@@ -14,7 +14,7 @@ export default function ScrollChevron() {
   if (!visible) return null;
 
   return (
-    <div className="flex justify-center pt-6 pb-2 transition-opacity duration-500">
+    <div className="flex justify-center pt-2 pb-1 transition-opacity duration-500">
       <svg
         width="24"
         height="24"
