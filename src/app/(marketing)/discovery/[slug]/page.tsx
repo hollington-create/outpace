@@ -117,9 +117,9 @@ export default function PersonalisedDiscoveryPage({
       <section className="px-6 pt-6 pb-2">
         <div className="max-w-3xl mx-auto">
           <p className="text-slate-400 text-base md:text-lg text-center mb-8 animate-fade-up-in">
-            A free, confidential growth consultation for{" "}
+            A free, no-strings conversation about{" "}
             <span className="text-white font-medium">{config.companyName}</span>{" "}
-            — voice or text, takes around 10 minutes.
+            — voice or text, whatever you prefer.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 relative">
@@ -129,18 +129,18 @@ export default function PersonalisedDiscoveryPage({
             {[
               {
                 step: "1",
-                title: "Have a conversation",
-                desc: "Tell us about your business, goals, and challenges",
+                title: "Have a quick chat",
+                desc: "Tell us how you're winning work, what's frustrating, and where you want to grow",
               },
               {
                 step: "2",
-                title: "We identify opportunities",
-                desc: "Our AI uncovers growth levers specific to your market",
+                title: "We do the analysis",
+                desc: "Our team reviews everything and identifies specific opportunities for your business",
               },
               {
                 step: "3",
-                title: "Get your strategy",
-                desc: "Receive a tailored proposal with clear next steps",
+                title: "Get a free proposal",
+                desc: "Practical recommendations you can act on — no cost, no obligation",
               },
             ].map((item) => (
               <div
@@ -191,8 +191,8 @@ export default function PersonalisedDiscoveryPage({
                   <line x1="16" y1="17" x2="8" y2="17" />
                 </svg>
               </div>
-              <p className="text-white font-semibold text-sm mb-2">Tailored proposal</p>
-              <p className="text-slate-400 text-xs leading-relaxed">A growth strategy built around your specific market, not a generic template</p>
+              <p className="text-white font-semibold text-sm mb-2">Built for your business</p>
+              <p className="text-slate-400 text-xs leading-relaxed">Specific recommendations based on what you tell us, not a generic template</p>
             </div>
             {/* Within 24 hours */}
             <div className="relative bg-[#0d1525]/80 border border-slate-700/50 rounded-xl p-6 text-center group hover:border-cyan-500/30 transition-colors duration-300 overflow-hidden">
@@ -203,8 +203,8 @@ export default function PersonalisedDiscoveryPage({
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
               </div>
-              <p className="text-white font-semibold text-sm mb-2">Within 24 hours</p>
-              <p className="text-slate-400 text-xs leading-relaxed">Our team reviews every insight from the conversation and delivers fast</p>
+              <p className="text-white font-semibold text-sm mb-2">Ready within 24 hours</p>
+              <p className="text-slate-400 text-xs leading-relaxed">Our team reviews the conversation and puts your proposal together fast</p>
             </div>
             {/* Clear next steps */}
             <div className="relative bg-[#0d1525]/80 border border-slate-700/50 rounded-xl p-6 text-center group hover:border-cyan-500/30 transition-colors duration-300 overflow-hidden">
@@ -216,7 +216,7 @@ export default function PersonalisedDiscoveryPage({
                 </svg>
               </div>
               <p className="text-white font-semibold text-sm mb-2">Clear next steps</p>
-              <p className="text-slate-400 text-xs leading-relaxed">Actionable opportunities ranked by impact, effort, and revenue potential</p>
+              <p className="text-slate-400 text-xs leading-relaxed">Practical ideas you can act on, ranked by what'll make the biggest difference</p>
             </div>
           </div>
         </div>
