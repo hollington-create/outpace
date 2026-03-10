@@ -56,7 +56,7 @@ export default function PersonalisedDiscoveryPage({
       )}
 
       {/* ── Hero ── */}
-      <section className="pt-6 pb-4 px-6 relative overflow-hidden" tabIndex={-1}>
+      <section className="pt-6 pb-8 px-6 relative overflow-hidden" tabIndex={-1}>
         <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[-30%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -91,25 +91,23 @@ export default function PersonalisedDiscoveryPage({
             )}
           </div>
 
-          <p className="text-base text-slate-400 max-w-2xl mb-2">
+          <p className="text-base text-slate-400 max-w-2xl mb-4">
             {config.heroSubtitle}
           </p>
 
-          {/* Known clients inline */}
-          {config.knownClients && config.knownClients.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-slate-600 text-xs font-medium uppercase tracking-wider">
-                Key clients
-              </span>
-              {config.knownClients.map((client) => (
-                <span
-                  key={client}
-                  className="text-slate-500 text-xs bg-slate-800/50 rounded-full px-2.5 py-0.5"
-                >
-                  {client}
-                </span>
-              ))}
-            </div>
+          {/* Website link */}
+          {config.website && (
+            <a
+              href={`https://${config.website}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-cyan-400/70 hover:text-cyan-300 text-xs font-medium transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+                <circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+              </svg>
+              {config.website}
+            </a>
           )}
         </div>
       </section>
@@ -120,7 +118,7 @@ export default function PersonalisedDiscoveryPage({
       {/* ── How It Works ── */}
       <section className="px-6 pt-10 pb-2">
         <div className="max-w-3xl mx-auto">
-          <p className="text-slate-400 text-sm text-center mb-8 animate-fade-up-in">
+          <p className="text-slate-400 text-base md:text-lg text-center mb-8 animate-fade-up-in">
             A free, confidential growth consultation for{" "}
             <span className="text-white font-medium">{config.companyName}</span>{" "}
             — voice or text, takes around 10 minutes.

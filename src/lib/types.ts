@@ -170,4 +170,5 @@ export interface DiscoveryPageConfig {
   contactName?: string;
   knownClients?: string[];
   heroImage?: string;
+  website?: string;
 }

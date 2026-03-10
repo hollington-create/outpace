@@ -77,6 +77,7 @@ export const PAGE_CONFIGS: Record<string, DiscoveryPageConfig> = {
     companyDescription:
       "Ireland's leading independent security and safety provider. End-to-end fire safety and security solutions — CCTV, access control, intruder alarms, fire protection, and TotalSafe by RAYN. Offices in Limerick and Dublin.",
     contactName: "Ray Nash",
+    website: "rayn.ie",
     knownClients: ["HSE", "ESB", "Nestlé", "Defence Forces"],
     valueProps: [
       "Targeted outreach to high-value sectors",
