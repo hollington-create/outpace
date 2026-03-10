@@ -176,39 +176,48 @@ export default function PersonalisedDiscoveryPage({
       </section>
 
       {/* ── What You'll Receive ── */}
-      <section className="px-6 pb-16">
+      <section className="px-6 pb-16 pt-4">
         <div className="max-w-3xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              {
-                icon: "📋",
-                title: "Tailored proposal",
-                desc: "A growth strategy specific to your business, not a generic template",
-              },
-              {
-                icon: "⏱",
-                title: "Within 24 hours",
-                desc: "Our team reviews the consultation and delivers your proposal fast",
-              },
-              {
-                icon: "🎯",
-                title: "Clear next steps",
-                desc: "Actionable opportunities ranked by impact and effort",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="bg-[#0d1525]/60 border border-slate-800/40 rounded-xl p-5 text-center"
-              >
-                <span className="text-2xl mb-3 block">{item.icon}</span>
-                <p className="text-white font-semibold text-sm mb-1">
-                  {item.title}
-                </p>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {item.desc}
-                </p>
+          <p className="text-slate-500 text-xs uppercase tracking-widest text-center mb-5 font-medium">What you&apos;ll receive</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Tailored proposal */}
+            <div className="relative bg-[#0d1525]/80 border border-slate-700/50 rounded-xl p-6 text-center group hover:border-cyan-500/30 transition-colors duration-300 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent" />
+              <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-4 text-cyan-400 group-hover:bg-cyan-500/15 transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
               </div>
-            ))}
+              <p className="text-white font-semibold text-sm mb-2">Tailored proposal</p>
+              <p className="text-slate-400 text-xs leading-relaxed">A growth strategy built around your specific market, not a generic template</p>
+            </div>
+            {/* Within 24 hours */}
+            <div className="relative bg-[#0d1525]/80 border border-slate-700/50 rounded-xl p-6 text-center group hover:border-cyan-500/30 transition-colors duration-300 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent" />
+              <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-4 text-cyan-400 group-hover:bg-cyan-500/15 transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <p className="text-white font-semibold text-sm mb-2">Within 24 hours</p>
+              <p className="text-slate-400 text-xs leading-relaxed">Our team reviews every insight from the conversation and delivers fast</p>
+            </div>
+            {/* Clear next steps */}
+            <div className="relative bg-[#0d1525]/80 border border-slate-700/50 rounded-xl p-6 text-center group hover:border-cyan-500/30 transition-colors duration-300 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent" />
+              <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-4 text-cyan-400 group-hover:bg-cyan-500/15 transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <p className="text-white font-semibold text-sm mb-2">Clear next steps</p>
+              <p className="text-slate-400 text-xs leading-relaxed">Actionable opportunities ranked by impact, effort, and revenue potential</p>
+            </div>
           </div>
         </div>
       </section>
