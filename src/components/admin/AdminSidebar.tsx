@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   Users,
+  MessageSquare,
   LogOut,
   Menu,
   X,
@@ -20,6 +21,7 @@ interface AdminSidebarProps {
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Clients", href: "/admin/clients", icon: Users },
+  { label: "Consultations", href: "/admin/consultations", icon: MessageSquare },
 ];
 
 export default function AdminSidebar({ userEmail }: AdminSidebarProps) {
